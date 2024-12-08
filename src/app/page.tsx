@@ -1,9 +1,7 @@
-import React from 'react'
+import { redirect } from 'next/navigation'
 
 function HomePage() {
-  return (
-    <div className='bg-red-500'>안녕하세요</div>
-  )
+  redirect("/article")
 }
 
 export default HomePage
