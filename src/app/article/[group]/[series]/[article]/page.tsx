@@ -30,7 +30,7 @@ async function ArticleDetailPage({ params }: ArticleDetailPageProps) {
   const matchedMarkdown = parsedMarkdowns.find(md => md.path.includes(`${decodeURIComponent(group)}/${decodeURIComponent(series)}/${decodeURIComponent(article)}.mdx`))
 
   return (
-    <article>
+    <article className='prose max-w-3xl m-auto bg-orange-50'>
       {matchedMarkdown?.content}
     </article>
   )
