@@ -11,6 +11,7 @@ const SOURCE_PATH = `${process.cwd()}/src`
 
 /**
  * /markdown/article 아래 모든 MDX 파일의 경로를 반환하는 함수
+ * @returns MDX 파일의 경로들이 담긴 배열
  */
 const getAllArticlePaths = () => {
   const paths = sync(`${SOURCE_PATH}/markdown/article/**/*.mdx`);
