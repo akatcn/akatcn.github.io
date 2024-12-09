@@ -15,7 +15,7 @@ function RootLayout({ children }: RootLayoutProps) {
     <html>
       <body className={`${pretendard.className} antialiased`}>
         <GlobalNavigation />
-        <main className="max-w-7xl m-auto px-4 md:px-5 bg-green-50">
+        <main className="max-w-7xl m-auto px-4 md:px-5">
           { children }
         </main>
         <GlobalFooter />
