@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 function HomePage() {
-  redirect("/article")
+  redirect("/blog")
 }
 
 export default HomePage

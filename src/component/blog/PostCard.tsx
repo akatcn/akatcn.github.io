@@ -2,15 +2,14 @@ import StaticChipGroup, { ChipDataType } from '@/component/ui/static/StaticChipG
 import Link from 'next/link'
 import React from 'react'
 
-type ArticleCardProps = {
+type PostCardProps = {
   title: string
   subTitle: string
   chips: ChipDataType[]
   date: Date
 }
 
-function ArticleCard({ title, subTitle, chips, date }: ArticleCardProps) {
-
+function PostCard({ title, subTitle, chips, date }: PostCardProps) {
   return (
     // todo: <Link> 컴포넌트는 <a> 태그로 치환됨. 동시에 <StaticChipGroup> 컴포넌트 또한 <a> 태그로 치환되므로 중첩된 <a>태그가 발생함. 이를 수정할 것
     <Link href="/">
@@ -28,4 +27,4 @@ function ArticleCard({ title, subTitle, chips, date }: ArticleCardProps) {
   )
 }
 
-export default ArticleCard
+export default PostCard
