@@ -1,4 +1,5 @@
-import StaticChipGroup, { ChipDataType } from '@/component/ui/static/StaticChipGroup'
+import { ChipDataType } from '@/component/ui/static/StaticLinkChip'
+import StaticChip from '@/component/ui/static/StaticChip'
 import Link from 'next/link'
 import React from 'react'
 
@@ -11,19 +12,23 @@ type PostCardProps = {
 
 function PostCard({ title, subTitle, chips, date }: PostCardProps) {
   return (
-    // todo: <Link> 컴포넌트는 <a> 태그로 치환됨. 동시에 <StaticChipGroup> 컴포넌트 또한 <a> 태그로 치환되므로 중첩된 <a>태그가 발생함. 이를 수정할 것
-    <Link href="/">
-      <div className='flex flex-col justify-between p-5 bg-gray-50 rounded-2xl text-start space-y-3 hover:bg-gray-100 h-full'>
-        <div className='space-y-3'>
-          <p className='font-bold text-2xl'>{title}</p>
-          <p className='text-gray-600'>{subTitle}</p>
-        </div>
-        <div className='flex items-center justify-between'>
-          <StaticChipGroup chips={chips} />
-          <p className='text-sm text-gray-500'>{date.toDateString()}</p>
-        </div>
+    <div className='relative flex flex-col justify-between p-5 bg-gray-50 rounded-2xl text-start space-y-3 hover:bg-gray-100 h-full'>
+      <Link href="/" className='absolute top-0 left-0 w-full h-full rounded-2xl' />
+      <div className='space-y-3'>
+        <p className='font-bold text-2xl'>{title}</p>
+        <p className='text-gray-600'>{subTitle}</p>
       </div>
-    </Link>
+      <div className='flex items-center justify-between'>
+        <div className='space-x-2 z-10'>
+          {chips.map((chip, index) => 
+            <Link key={index} href={chip.path}>
+              <StaticChip text={chip.text} selected={chip.selected} />
+            </Link>
+          )}
+        </div>
+        <p className='text-sm text-gray-500'>{date.toDateString()}</p>
+      </div>
+    </div>
   )
 }
 

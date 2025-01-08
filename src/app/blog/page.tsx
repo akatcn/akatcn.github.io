@@ -1,5 +1,5 @@
 import PostCard from '@/component/blog/PostCard'
-import StaticChipGroup, { ChipDataType } from '@/component/ui/static/StaticChipGroup'
+import StaticLinkChip, { ChipDataType } from '@/component/ui/static/StaticLinkChip'
 import React from 'react'
 
 const chipsA: ChipDataType[] = [
@@ -24,17 +24,17 @@ const chipsB: ChipDataType[] = [
   {
     text: "tagA",
     selected: false,
-    path: "/"
+    path: "/a"
   },
   {
     text: "tagB",
     selected: false,
-    path: "/"
+    path: "/b"
   },
   {
     text: "tagC",
     selected: false,
-    path: "/"
+    path: "/c"
   },
 ]
 
@@ -43,7 +43,11 @@ function PostPage() {
     <div className='w-full text-center space-y-6 mt-16'>
       <h1 className='text-8xl font-extrabold'>블로그</h1>
       <p className='text-gray-600'>(블로그 페이지에 대한 간략한 설명)</p>
-      <StaticChipGroup chips={chipsA} />
+      <div className='space-x-2'>
+        {chipsA.map(chipData => 
+          <StaticLinkChip key={chipData.path} text={chipData.text} selected={chipData.selected} path={chipData.path} />
+        )}
+      </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4'>
         <PostCard
           title={"(제목) 포스트 하나에 대한 제목이 적히는 곳입니다(1)"}

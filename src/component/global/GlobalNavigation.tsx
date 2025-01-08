@@ -9,7 +9,7 @@ function GlobalNavigation() {
         <Link href="/">
           <p className='font-bold md:text-lg'>YHSpace</p>
         </Link>
-        <div className='hidden md:flex md:items-center md:gap-x-6'>
+        <div className='flex items-center md:gap-x-6'>
           <Link href="/about">
             <p className='font-bold'>소개</p>
           </Link>
