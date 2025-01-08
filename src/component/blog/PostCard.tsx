@@ -1,5 +1,5 @@
 import { ChipDataType } from '@/component/ui/static/StaticLinkChip'
-import StaticChip from '@/component/ui/static/StaticChip'
+import StaticChip, { StaticChipSizeEnum } from '@/component/ui/static/StaticChip'
 import Link from 'next/link'
 import React from 'react'
 
@@ -22,7 +22,7 @@ function PostCard({ title, subTitle, chips, date }: PostCardProps) {
         <div className='space-x-2 z-10'>
           {chips.map((chip, index) => 
             <Link key={index} href={chip.path}>
-              <StaticChip text={chip.text} selected={chip.selected} />
+              <StaticChip text={chip.text} selected={chip.selected} size={StaticChipSizeEnum.M} />
             </Link>
           )}
         </div>
