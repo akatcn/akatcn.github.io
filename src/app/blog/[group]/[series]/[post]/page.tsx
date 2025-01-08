@@ -7,12 +7,12 @@ export const generateStaticParams = async () => {
   return parsedMarkdowns
     .map(markdown => {
       const segments = markdown.path.split("/")
-      const postIndex = segments.indexOf("post")
+      const blogIndex = segments.indexOf("blog")
 
       return {
-        group: segments[postIndex + 1],
-        series: segments[postIndex + 2],
-        post: segments[postIndex + 3].replace(/\.mdx$/, "")
+        group: segments[blogIndex + 1],
+        series: segments[blogIndex + 2],
+        post: segments[blogIndex + 3].replace(/\.mdx$/, "")
       }
     })
 }

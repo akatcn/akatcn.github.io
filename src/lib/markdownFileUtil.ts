@@ -19,8 +19,8 @@ const getAllPostPaths = () => {
   return paths
     .filter(path => {
       const segments = path.split("/")
-      const postIndex = segments.indexOf("post")
-      return postIndex !== -1 && segments.length === postIndex + 4
+      const blogIndex = segments.indexOf("blog")
+      return blogIndex !== -1 && segments.length === blogIndex + 4
     })
 }
 
