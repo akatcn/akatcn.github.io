@@ -24,6 +24,9 @@ const getAllPostPaths = () => {
     })
 }
 
+// todo: 적절한 파일로 옮길 것
+type FrontmatterKeyType = "title" | "subTitle" | "description" | "layout" | "tags" | "date" | "thumbnail"
+
 /**
  * /markdown/blog 아래의 모든 MDX 파일을 파싱하여 반환하는 함수
  * @param tocHeading TOC로 쓰일 제목
@@ -36,7 +39,7 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
   return await Promise.all(filePaths
     .map(async (path) => {
       const fileContent = fs.readFileSync(path, 'utf-8');
-      const { frontmatter, content } = await compileMDX({
+      const { frontmatter, content } = await compileMDX<Record<FrontmatterKeyType, string>>({
         source: fileContent,
         components,
         options: {
@@ -59,9 +62,6 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
 
 // todo: 적절한 파일로 옮길 것(ex. data.ts)
 // todo: 마크다운에 적용할 컴포넌트들의 이름을 programmatic하게 추출하여 리스트업 할 것
-const components = {
+export const markdownComponents = {
   MyComponent
 }
-
-// todo: 적절한 파일로 옮길 것(ex. data.ts)
-export const parsedMarkdowns = await getParsedMarkdowns("목차", components)

@@ -1,42 +1,22 @@
 import PostCard from '@/component/blog/PostCard'
 import StaticLinkChip, { ChipDataType } from '@/component/ui/static/StaticLinkChip'
+import { getParsedMarkdowns, markdownComponents } from '@/lib/markdownFileUtil'
 import React from 'react'
+
+export const parsedMarkdowns = await getParsedMarkdowns("목차", markdownComponents)
 
 const chipsA: ChipDataType[] = [
   {
     text: "전체",
     selected: true,
     path: "/"
-  },
-  {
-    text: "Project",
-    selected: false,
-    path: "/blog/project"
-  },
-  {
-    text: "Research",
-    selected: false,
-    path: "/blog/research"
-  },
+  }
 ]
 
-const chipsB: ChipDataType[] = [
-  {
-    text: "tagA",
-    selected: false,
-    path: "/a"
-  },
-  {
-    text: "tagB",
-    selected: false,
-    path: "/b"
-  },
-  {
-    text: "tagC",
-    selected: false,
-    path: "/c"
-  },
-]
+const extractPath = (inputPath: string) => {
+  const match = inputPath.match(/\/markdown(\/[^\/]+)*\/([^\/]+)\.mdx$/)
+  return match ? match[0].replace('/markdown', '').replace(/\.mdx$/, '') : "/"
+}
 
 function PostPage() {
   return (
@@ -49,18 +29,17 @@ function PostPage() {
         )}
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4'>
-        <PostCard
-          title={"(제목) 포스트 하나에 대한 제목이 적히는 곳입니다(1)"}
-          subTitle={"(부제) 부제가 적히는 곳입니다. 부제는 매우 길어질 수 있기 때문에 여러 줄로 표시될 수 있어야만 합니다. 예를들어 이 문장처럼 부제는 매우 길어질 수 있겠네요"}
-          chips={chipsB}
-          date={new Date()}
-        />
-        <PostCard
-          title={"(제목) 포스트 하나에 대한 제목이 적히는 곳입니다(2)"}
-          subTitle={"(부제) 부제가 적히는 곳입니다. 부제는 매우 길어질 수 있기 때문에 여러 줄로 표시될 수 있어야만 합니다. 예를들어 이 문장처럼 부제는 매우 길어질 수 있겠네요"}
-          chips={chipsB}
-          date={new Date()}
-        />
+        {
+          parsedMarkdowns.map(parsedMarkdown => 
+            <PostCard
+              key={parsedMarkdown.path}
+              title={parsedMarkdown.frontmatter.title}
+              subTitle={parsedMarkdown.frontmatter.subTitle}
+              date={new Date(parsedMarkdown.frontmatter.date)}
+              path={extractPath(parsedMarkdown.path)}
+            />
+          )
+        }
       </div>
     </div>
   )

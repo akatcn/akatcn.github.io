@@ -1,4 +1,4 @@
-import { parsedMarkdowns } from '@/lib/markdownFileUtil'
+import { parsedMarkdowns } from '@/app/blog/page'
 import React from 'react'
 
 export const dynamicParams = false
