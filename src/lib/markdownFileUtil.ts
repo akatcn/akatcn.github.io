@@ -65,3 +65,5 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
 export const markdownComponents = {
   MyComponent
 }
+
+export const parsedMarkdowns = await getParsedMarkdowns("목차", markdownComponents)

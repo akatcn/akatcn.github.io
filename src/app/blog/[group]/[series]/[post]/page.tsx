@@ -1,5 +1,5 @@
-import { parsedMarkdowns } from '@/app/blog/page'
 import StaticChip from '@/component/ui/static/StaticChip'
+import { parsedMarkdowns } from '@/lib/markdownFileUtil'
 import React from 'react'
 
 export const dynamicParams = false

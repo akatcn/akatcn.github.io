@@ -1,17 +1,6 @@
 import PostCard from '@/component/blog/PostCard'
-import StaticLinkChip, { ChipDataType } from '@/component/ui/static/StaticLinkChip'
-import { getParsedMarkdowns, markdownComponents } from '@/lib/markdownFileUtil'
+import { parsedMarkdowns } from '@/lib/markdownFileUtil'
 import React from 'react'
-
-export const parsedMarkdowns = await getParsedMarkdowns("목차", markdownComponents)
-
-const chipsA: ChipDataType[] = [
-  {
-    text: "전체",
-    selected: true,
-    path: "/"
-  }
-]
 
 const extractPath = (inputPath: string) => {
   const match = inputPath.match(/\/markdown(\/[^\/]+)*\/([^\/]+)\.mdx$/)

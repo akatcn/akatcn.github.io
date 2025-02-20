@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
 /* 마크다운 본문 스타일링 */
 .yhmd {
