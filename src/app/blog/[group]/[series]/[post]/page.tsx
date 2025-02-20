@@ -32,8 +32,8 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
 
   return (
     <article className='max-w-3xl mx-auto'>
-      <div className='my-14 pb-6 border-b-2'>
-        <h1 className='text-5xl my-4 font-extrabold'>{matchedMarkdown?.frontmatter.title}</h1>
+      <div className='my-14 pb-6 border-b-1 border-gray-300'>
+        <h1 className='text-4xl md:text-5xl my-4 font-extrabold md:leading-15'>{matchedMarkdown?.frontmatter.title}</h1>
         <div>
           <h2 className='text-2xl my-2 text-gray-600'>{matchedMarkdown?.frontmatter.description}</h2>
           <span className='text-gray-500'>{new Date(matchedMarkdown?.frontmatter.date ?? "").toLocaleString("ko-KR")}</span>
@@ -44,7 +44,7 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
           </div>
         </div>
       </div>
-      <div className='prose'>
+      <div className='yhmd'>
         {matchedMarkdown?.content}
       </div>
     </article>
