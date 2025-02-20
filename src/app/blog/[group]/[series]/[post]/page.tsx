@@ -1,4 +1,5 @@
 import { parsedMarkdowns } from '@/app/blog/page'
+import StaticChip from '@/component/ui/static/StaticChip'
 import React from 'react'
 
 export const dynamicParams = false
@@ -30,8 +31,22 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
   const matchedMarkdown = parsedMarkdowns.find(md => md.path.includes(`${decodeURIComponent(group)}/${decodeURIComponent(series)}/${decodeURIComponent(post)}.mdx`))
 
   return (
-    <article className='prose max-w-3xl m-auto bg-orange-50'>
-      {matchedMarkdown?.content}
+    <article className='max-w-3xl mx-auto'>
+      <div className='my-14 pb-6 border-b-2'>
+        <h1 className='text-5xl my-4 font-extrabold'>{matchedMarkdown?.frontmatter.title}</h1>
+        <div>
+          <h2 className='text-2xl my-2 text-gray-600'>{matchedMarkdown?.frontmatter.description}</h2>
+          <span className='text-gray-500'>{new Date(matchedMarkdown?.frontmatter.date ?? "").toLocaleString("ko-KR")}</span>
+          <div className='flex gap-2 mt-2'>
+            <StaticChip text="연구" selected={false} />
+            <StaticChip text="JavaScript" selected={false} />
+            <StaticChip text="Computer Science" selected={false} />
+          </div>
+        </div>
+      </div>
+      <div className='prose'>
+        {matchedMarkdown?.content}
+      </div>
     </article>
   )
 }

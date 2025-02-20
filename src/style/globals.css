@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.prose {
+  max-width: 80rem;
+}
+
+.prose h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  margin-top: 1.7rem;
+  margin-bottom: 1rem;
+}
+.prose h3 {
+  font-size: 1.25rem;
+}
+
+.prose p {
+  margin-top: 1rem;
+  margin-bottom: 1rem
+}
