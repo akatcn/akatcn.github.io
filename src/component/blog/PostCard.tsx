@@ -13,10 +13,10 @@ type PostCardProps = {
 
 function PostCard({ title, subTitle, chips = [], date, path }: PostCardProps) {
   return (
-    <div className='relative flex flex-col justify-between p-5 bg-gray-50 rounded-2xl text-start space-y-3 hover:bg-gray-100 h-full'>
+    <div className='relative flex flex-col justify-between p-5 bg-system-gray-6 rounded-2xl text-start space-y-3 hover:bg-system-gray-5 h-full'>
       <div className='space-y-3'>
         <p className='font-bold text-2xl'>{title}</p>
-        <p className='text-gray-600'>{subTitle}</p>
+        <p className='text-system-gray'>{subTitle}</p>
       </div>
       <div className='flex items-center justify-between'>
         <div className='space-x-2 z-10'>
@@ -26,7 +26,7 @@ function PostCard({ title, subTitle, chips = [], date, path }: PostCardProps) {
             </Link>
           )}
         </div>
-        <p className='text-sm text-gray-500'>{date.toLocaleDateString('ko-KR')}</p>
+        <p className='text-sm text-system-gray'>{date.toLocaleDateString('ko-KR')}</p>
       </div>
       <Link href={path} className='absolute top-0 left-0 w-full h-full rounded-2xl' />
     </div>

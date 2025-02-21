@@ -1,0 +1,100 @@
+/* 마크다운 본문 스타일링 */
+.yhmd {
+  max-width: 80rem;
+}
+.yhmd h1 {
+  @apply text-4xl font-extrabold mb-3 leading-15;
+}
+.yhmd h2 {
+  @apply text-3xl font-bold mb-2 leading-10;
+}
+.yhmd h3 {
+  @apply text-xl font-bold mb-1 leading-9;
+}
+.yhmd h4 {
+  @apply text-lg font-semibold;
+}
+.yhmd p {
+  @apply mb-4 leading-7;
+}
+.yhmd p + h2 {
+  @apply mt-8;
+}
+.yhmd p + h3 {
+  @apply mt-6;
+}
+.yhmd hr {
+  @apply border-t-gray-300 my-4;
+}
+.yhmd ul {
+  @apply leading-7;
+  padding-inline-start: 1rem;
+}
+.yhmd ul > li {
+  @apply list-disc;
+}
+.yhmd ul > li > ul > li {
+  @apply list-[circle];
+}
+.yhmd ul > li > ul > li > ul > li {
+  @apply list-[square];
+}
+.yhmd ol {
+  @apply leading-7;
+  padding-inline-start: 1rem;
+}
+.yhmd ol > li {
+  @apply list-decimal;
+}
+.yhmd ol > li > ol > li {
+  @apply list-[lower-alpha];
+}
+.yhmd a {
+  @apply underline text-sky-400;
+}
+.yhmd .contains-task-list {
+  padding-inline-start: 0rem;
+}
+.yhmd .contains-task-list li {
+  @apply list-none;
+}
+
+/* 인라인 코드 스타일링 */
+.yhmd span[data-rehype-pretty-code-figure] > code {
+  @apply rounded px-2 py-1;
+}
+
+/* 코드 블럭 스타일링 */
+.yhmd figure[data-rehype-pretty-code-figure] > pre {
+  @apply py-4 rounded-md overflow-auto;
+}
+.yhmd figure[data-rehype-pretty-code-figure] span[data-line] {
+  @apply px-4;
+}
+
+/* 코드 블럭 > 하이라이팅 라인 스타일링 */
+.yhmd span[data-highlighted-line] {
+  @apply bg-indigo-200/10;
+}
+
+/* 코드 블럭 > 라인 넘버 스타일링 */
+.yhmd code[data-line-numbers] {
+  counter-reset: line;
+}
+.yhmd code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: gray;
+}
+.yhmd code[data-line-numbers-max-digits="2"] > [data-line]::before {
+  width: 1.25rem;
+}
+.yhmd code[data-line-numbers-max-digits="3"] > [data-line]::before {
+  width: 1.75rem;
+}
+.yhmd code[data-line-numbers-max-digits="4"] > [data-line]::before {
+  width: 2.25rem;
+}

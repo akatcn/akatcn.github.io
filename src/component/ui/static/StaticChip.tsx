@@ -24,8 +24,8 @@ const staticChipVariants = cva([], {
       [StaticChipSizeEnum.S]: "px-1.5 py-0.5 text-xs rounded-md",
     },
     selected : {
-      true: "bg-gray-900 hover:bg-gray-700 text-white",
-      false: "bg-gray-200 text-gray-600 hover:bg-gray-100"
+      true: "bg-present text-absent hover:bg-present/80",
+      false: "bg-system-gray-6 text-system-gray hover:bg-system-gray-5"
     }
   }
 })

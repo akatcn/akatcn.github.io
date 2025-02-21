@@ -32,16 +32,16 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
 
   return (
     <article className='max-w-3xl mx-auto'>
-      <div className='my-14 pb-6 border-b-1 border-gray-300'>
-        <h1 className='text-4xl md:text-5xl my-4 font-extrabold md:leading-15'>{matchedMarkdown?.frontmatter.title}</h1>
-        <div>
-          <h2 className='text-2xl my-2 text-gray-600'>{matchedMarkdown?.frontmatter.description}</h2>
-          <span className='text-gray-500'>{new Date(matchedMarkdown?.frontmatter.date ?? "").toLocaleString("ko-KR")}</span>
-          <div className='flex gap-2 mt-2'>
+      <div className='my-8 md:my-14 pb-6 border-b-1 border-gray-300'>
+        <h1 className='text-4xl md:text-5xl font-extrabold leading-12 md:leading-15'>{matchedMarkdown?.frontmatter.title}</h1>
+        <div className='space-y-2 mt-2'>
+          <h2 className='text-2xl text-system-gray'>{matchedMarkdown?.frontmatter.description}</h2>
+          <div className='flex gap-2'>
             <StaticChip text="연구" selected={false} />
-            <StaticChip text="JavaScript" selected={false} />
+            <StaticChip text="JavaScript" selected={true} />
             <StaticChip text="Computer Science" selected={false} />
           </div>
+          <div className='text-end mt-4 text-system-gray-2'>{new Date(matchedMarkdown?.frontmatter.date ?? "").toLocaleString("ko-KR")}</div>
         </div>
       </div>
       <div className='yhmd'>

@@ -10,8 +10,8 @@ function GlobalNavigation() {
   const currentGroupName = usePathname().split("/").filter(Boolean)[1] || "";
 
   return (
-    <nav className='sticky top-0 w-full z-50 border-b-1 border-gray-200'>
-      <div className='flex items-center justify-between max-w-7xl m-auto py-3 px-4 md:px-5 bg-white'>
+    <nav className='sticky top-0 w-full z-50 border-b-1 border-b-system-gray-5 bg-absent'>
+      <div className='flex items-center justify-between max-w-7xl m-auto py-3 px-4 md:px-5'>
         <Link href="/">
           <p className='font-bold md:text-lg'>YHSpace</p>
         </Link>
@@ -19,7 +19,7 @@ function GlobalNavigation() {
           {
             Object.entries(GroupNameKrMap).map(([path, groupName]) => 
               <Link href={`/blog/${path}`} key={path}>
-                <li className={classNames('text-sm text-gray-800', currentGroupName === path && "font-bold")}>{groupName}</li>
+                <li className={classNames('text-sm', currentGroupName === path ? "font-bold" : "text-system-gray")}>{groupName}</li>
               </Link>
             )
           }
