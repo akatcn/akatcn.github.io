@@ -1,5 +1,6 @@
 "use client"
 
+import { useThemeMode } from '@/hooks/useThemeMode'
 import { GroupNameKrMap } from '@/lib/groupNameMap'
 import classNames from 'classnames'
 import Link from 'next/link'
@@ -8,6 +9,7 @@ import React from 'react'
 
 function GlobalNavigation() {
   const currentGroupName = usePathname().split("/").filter(Boolean)[1] || "";
+  const { toggleTheme } = useThemeMode()
 
   return (
     <nav className='sticky top-0 w-full z-50 border-b-1 border-b-system-gray-5 bg-absent'>
@@ -25,6 +27,8 @@ function GlobalNavigation() {
           }
         </ul>
         <div className='flex items-center md:gap-x-6'>
+          <button className='cursor-pointer hidden dark:block' onClick={toggleTheme}>라이트 모드로 전환</button>
+          <button className='cursor-pointer dark:hidden' onClick={toggleTheme}>다크 모드로 전환</button>
           <Link href="/about">
             <p className='font-bold'>소개</p>
           </Link>
