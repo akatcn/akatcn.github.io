@@ -2,28 +2,22 @@
 .yhmd {
   max-width: 80rem;
 }
-.yhmd h1 {
-  @apply text-4xl font-extrabold mb-3 leading-15;
+.yhmd > h1 {
+  @apply text-4xl font-extrabold mt-8 leading-15;
 }
-.yhmd h2 {
-  @apply text-3xl font-bold mb-2 leading-10;
+.yhmd > h2 {
+  @apply text-3xl font-bold mt-6 leading-10;
 }
-.yhmd h3 {
-  @apply text-xl font-bold mb-1 leading-9;
+.yhmd > h3 {
+  @apply text-xl font-bold mt-4 leading-8;
 }
-.yhmd h4 {
-  @apply text-lg font-semibold;
+.yhmd > h4 {
+  @apply text-lg font-semibold mt-2;
 }
-.yhmd p {
-  @apply mb-4 leading-7;
+.yhmd > p {
+  @apply leading-7 py-1;
 }
-.yhmd p + h2 {
-  @apply mt-8;
-}
-.yhmd p + h3 {
-  @apply mt-6;
-}
-.yhmd hr {
+.yhmd > hr {
   @apply border-t-gray-300 my-4;
 }
 .yhmd ul {
@@ -50,7 +44,7 @@
   @apply list-[lower-alpha];
 }
 .yhmd a {
-  @apply underline text-sky-400;
+  @apply text-system-sky;
 }
 .yhmd .contains-task-list {
   padding-inline-start: 0rem;
@@ -61,7 +55,7 @@
 
 /* 인라인 코드 스타일링 */
 .yhmd span[data-rehype-pretty-code-figure] > code {
-  @apply rounded px-2 py-1;
+  @apply rounded px-2 pt-0.5 pb-1;
 }
 
 /* 코드 블럭 스타일링 */
@@ -70,6 +64,9 @@
 }
 .yhmd figure[data-rehype-pretty-code-figure] span[data-line] {
   @apply px-4;
+}
+.yhmd figure[data-rehype-pretty-code-figure] {
+  @apply my-1
 }
 
 /* 코드 블럭 > 하이라이팅 라인 스타일링 */
@@ -97,4 +94,29 @@
 }
 .yhmd code[data-line-numbers-max-digits="4"] > [data-line]::before {
   width: 2.25rem;
+}
+
+.yhmd blockquote {
+  @apply relative px-14 py-8 my-1;
+  @apply border-l-8 border-l-system-sky;
+  @apply bg-system-gray-6 text-system-gray italic leading-6.5;
+}
+
+.yhmd blockquote p {
+  @apply py-1;
+}
+
+.yhmd blockquote::before {
+  @apply absolute left-[20px] top-[10px];
+  @apply text-system-sky text-7xl font-[Arial];
+  content: "\201C";
+}
+
+.yhmd blockquote span {
+  @apply text-system-sky;
+}
+
+.yhmd blockquote cite {
+  @apply block mt-4;
+  @apply text-present italic font-semibold;
 }

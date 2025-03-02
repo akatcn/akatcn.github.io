@@ -5,32 +5,37 @@ const PreferredTheme = {
 
 type PreferredThemeType = (typeof PreferredTheme)[keyof typeof PreferredTheme]
 
-const LocalStorageThemeKey = "theme"
+const LOCAL_STORAGE_THEME_KEY = "theme"
+const DATA_THEME_ATTRIBUTE_KEY = "data-theme"
 
 export const useThemeMode = () => {
-  const updateDataTheme = (theme: PreferredThemeType) => {
-    switch (theme) {
+  const updateDataTheme = (themeToApply: PreferredThemeType) => {
+    switch (themeToApply) {
       case PreferredTheme.LIGHT:
-        document.documentElement.setAttribute("data-theme", PreferredTheme.LIGHT)
-        localStorage.setItem(LocalStorageThemeKey, theme)
+        document.documentElement.setAttribute(DATA_THEME_ATTRIBUTE_KEY, PreferredTheme.LIGHT)
+        localStorage.setItem(LOCAL_STORAGE_THEME_KEY, themeToApply)
         break
       case PreferredTheme.DARK:
-        document.documentElement.setAttribute("data-theme", PreferredTheme.DARK)
-        localStorage.setItem(LocalStorageThemeKey, theme)
+        document.documentElement.setAttribute(DATA_THEME_ATTRIBUTE_KEY, PreferredTheme.DARK)
+        localStorage.setItem(LOCAL_STORAGE_THEME_KEY, themeToApply)
         break
     }
   }
 
-  const getLocalStorageTheme = (): PreferredThemeType | null => {
-    return localStorage.getItem(LocalStorageThemeKey) as (PreferredThemeType | null)
-  }
-
-  const getPreferredTheme = (): PreferredThemeType => {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? PreferredTheme.DARK : PreferredTheme.LIGHT
+  const getDocumentDataTheme = (): PreferredThemeType | null => {
+    const currentDataTheme = document.documentElement.getAttribute(DATA_THEME_ATTRIBUTE_KEY) ?? PreferredTheme.LIGHT
+    switch (currentDataTheme) {
+      case PreferredTheme.LIGHT:
+        return PreferredTheme.LIGHT
+      case PreferredTheme.DARK:
+        return PreferredTheme.DARK
+      default:
+        return null
+    }
   }
 
   const toggleTheme = () => {
-    const currentTheme = getLocalStorageTheme() ?? getPreferredTheme()
+    const currentTheme = getDocumentDataTheme()
     switch (currentTheme) {
       case PreferredTheme.LIGHT:
         updateDataTheme(PreferredTheme.DARK)

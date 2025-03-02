@@ -10,13 +10,16 @@
   --color-system-gray-4: rgb(209, 209, 214);
   --color-system-gray-5: rgb(229, 229, 234);
   --color-system-gray-6: rgb(242, 242, 247);
+  --color-system-sky: var(--color-sky-700);
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @layer base {
   [data-theme='dark'] {
-    color: white;
+    /* 눈이 더 편안한 다크모드 배경 색상값 */
+    /* background-color: rgb(30, 30, 30); */
+    color: rgb(215, 215, 216);
     background-color: black;
     color-scheme: dark;
     --color-present: white;
@@ -27,5 +30,6 @@
     --color-system-gray-4: rgb(58, 58, 60);
     --color-system-gray-5: rgb(44, 44, 46);
     --color-system-gray-6: rgb(28, 28, 30);
+    --color-system-sky: var(--color-sky-600);
   }
 }

@@ -13,8 +13,8 @@ type PostCardProps = {
 
 function PostCard({ title, subTitle, chips = [], date, path }: PostCardProps) {
   return (
-    <div className='relative flex flex-col justify-between p-5 bg-system-gray-6 rounded-2xl text-start space-y-3 hover:bg-system-gray-5 h-full'>
-      <div className='space-y-3'>
+    <div className='relative flex flex-col justify-between p-5 bg-system-gray-6 rounded-2xl text-start hover:bg-system-gray-5 h-full'>
+      <div className='space-y-3 mb-3'>
         <p className='font-bold text-2xl'>{title}</p>
         <p className='text-system-gray'>{subTitle}</p>
       </div>
