@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import remarkEmoji from 'remark-emoji';
 import remarkToc from "remark-toc";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeExternalLinks from "rehype-external-links";
 
 const SOURCE_PATH = `${process.cwd()}/src`
 
@@ -44,8 +45,30 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
         components,
         options: {
           mdxOptions: {
-            remarkPlugins: [remarkGfm, remarkEmoji, [remarkToc, { heading: tocHeading }]],
-            rehypePlugins: [rehypePrettyCode]
+            remarkPlugins: [
+              remarkGfm,
+              remarkEmoji,
+              [
+                remarkToc,
+                {
+                  heading: tocHeading
+                }
+              ]
+            ],
+            rehypePlugins: [
+              rehypePrettyCode,
+              [
+                rehypeExternalLinks,
+                {
+                  target: "_blank",
+                  rel: ["noopener", "noreferrer", 'nofollow'],
+                  content: { type: 'text', value: '↗︎' },
+                  properties: {
+                    className: "external-link"
+                  }
+                }
+              ]
+            ],
           },
           parseFrontmatter: true
         }

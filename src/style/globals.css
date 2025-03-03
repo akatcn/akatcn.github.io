@@ -2,6 +2,8 @@
 @import "./markdown.css";
 
 @theme {
+  --color-primary: rgb(33, 33, 33);
+  --color-secondary: rgb(66, 66, 66);
   --color-present: black;
   --color-absent: white;
   --color-system-gray: rgb(142, 142, 147);
@@ -17,11 +19,8 @@
 
 @layer base {
   [data-theme='dark'] {
-    /* 눈이 더 편안한 다크모드 배경 색상값 */
-    /* background-color: rgb(30, 30, 30); */
-    color: rgb(215, 215, 216);
-    background-color: black;
-    color-scheme: dark;
+    --color-primary: rgb(235, 235, 235);
+    --color-secondary: rgb(215, 215, 215);
     --color-present: white;
     --color-absent: black;
     --color-system-gray: rgb(142, 142, 147);

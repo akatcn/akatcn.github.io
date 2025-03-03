@@ -41,7 +41,7 @@ const themeScript = `(function() {
 
 function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html>
+    <html className="bg-absent text-secondary dark:scheme-dark" style={{transition: "border-color .5s, background-color .5s"}}>
       <body className={`${pretendard.className} antialiased`}>
         <script dangerouslySetInnerHTML={{__html: themeScript}} />
         <GlobalNavigation />

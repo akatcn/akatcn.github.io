@@ -44,7 +44,16 @@
   @apply list-[lower-alpha];
 }
 .yhmd a {
-  @apply text-system-sky;
+  @apply relative inline-block text-primary font-[475] underline underline-offset-4 decoration-system-gray-4;
+}
+.yhmd a::before {
+  @apply absolute -top-0.5 -left-1 -right-1 -bottom-0.5 -z-1;
+  @apply bg-transparent rounded-sm;
+  content: "";
+  transition: background-color 0.3s ease;
+}
+.yhmd a:hover::before {
+  @apply bg-system-gray-5;
 }
 .yhmd .contains-task-list {
   padding-inline-start: 0rem;
@@ -98,7 +107,7 @@
 
 .yhmd blockquote {
   @apply relative px-14 py-8 my-1;
-  @apply border-l-8 border-l-system-sky;
+  @apply border-l-8 border-l-system-gray-2;
   @apply bg-system-gray-6 text-system-gray italic leading-6.5;
 }
 
@@ -108,15 +117,15 @@
 
 .yhmd blockquote::before {
   @apply absolute left-[20px] top-[10px];
-  @apply text-system-sky text-7xl font-[Arial];
+  @apply text-system-gray text-7xl font-[Arial];
   content: "\201C";
 }
 
 .yhmd blockquote span {
-  @apply text-system-sky;
+  @apply text-system-gray;
 }
 
 .yhmd blockquote cite {
   @apply block mt-4;
-  @apply text-present italic font-semibold;
+  @apply text-system-gray italic font-semibold;
 }
