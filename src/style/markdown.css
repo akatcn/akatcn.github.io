@@ -2,18 +2,6 @@
 .yhmd {
   max-width: 80rem;
 }
-.yhmd > h1 {
-  @apply text-4xl font-extrabold mt-8 leading-15;
-}
-.yhmd > h2 {
-  @apply text-3xl font-bold mt-6 leading-10;
-}
-.yhmd > h3 {
-  @apply text-xl font-bold mt-4 leading-8;
-}
-.yhmd > h4 {
-  @apply text-lg font-semibold mt-2;
-}
 .yhmd > p {
   @apply leading-7 py-1;
 }
@@ -43,16 +31,17 @@
 .yhmd ol > li > ol > li {
   @apply list-[lower-alpha];
 }
-.yhmd a {
+.yhmd > p a {
   @apply relative inline-block text-primary font-[475] underline underline-offset-4 decoration-system-gray-4;
+  transition: text-decoration-color .5s
 }
-.yhmd a::before {
+.yhmd > p a::before {
   @apply absolute -top-0.5 -left-1 -right-1 -bottom-0.5 -z-1;
   @apply bg-transparent rounded-sm;
   content: "";
   transition: background-color 0.3s ease;
 }
-.yhmd a:hover::before {
+.yhmd > p a:hover::before {
   @apply bg-system-gray-5;
 }
 .yhmd .contains-task-list {

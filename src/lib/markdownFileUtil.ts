@@ -7,6 +7,11 @@ import remarkEmoji from 'remark-emoji';
 import remarkToc from "remark-toc";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeExternalLinks from "rehype-external-links";
+import rehypeSlug from "rehype-slug";
+import Heading1 from "@/component/markdown/Heading1";
+import Heading2 from "@/component/markdown/Heading2";
+import Heading3 from "@/component/markdown/Heading3";
+import Heading4 from "@/component/markdown/Heading4";
 
 const SOURCE_PATH = `${process.cwd()}/src`
 
@@ -57,6 +62,7 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
             ],
             rehypePlugins: [
               rehypePrettyCode,
+              rehypeSlug,
               [
                 rehypeExternalLinks,
                 {
@@ -85,8 +91,12 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
 
 // todo: 적절한 파일로 옮길 것(ex. data.ts)
 // todo: 마크다운에 적용할 컴포넌트들의 이름을 programmatic하게 추출하여 리스트업 할 것
-export const markdownComponents = {
-  MyComponent
+const markdownComponents = {
+  MyComponent,
+  h1: Heading1,
+  h2: Heading2,
+  h3: Heading3,
+  h4: Heading4
 }
 
 export const parsedMarkdowns = await getParsedMarkdowns("목차", markdownComponents)
