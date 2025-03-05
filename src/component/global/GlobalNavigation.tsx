@@ -26,7 +26,7 @@ function GlobalNavigation() {
             )
           }
         </ul>
-        <div className='hidden md:flex items-center md:gap-x-6'>
+        <div className='flex items-center gap-x-6'>
           <button className='cursor-pointer hidden dark:block' onClick={toggleTheme}>라이트 모드로 전환</button>
           <button className='cursor-pointer dark:hidden' onClick={toggleTheme}>다크 모드로 전환</button>
           <Link href="/about">

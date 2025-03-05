@@ -31,7 +31,7 @@ const getAllPostPaths = () => {
 }
 
 // todo: 적절한 파일로 옮길 것
-type FrontmatterKeyType = "title" | "subTitle" | "description" | "layout" | "tags" | "date" | "thumbnail"
+type FrontmatterKeyType = "title" | "subtitle" | "description" | "layout" | "tags" | "date" | "thumbnail"
 
 /**
  * /markdown/blog 아래의 모든 MDX 파일을 파싱하여 반환하는 함수
@@ -39,7 +39,7 @@ type FrontmatterKeyType = "title" | "subTitle" | "description" | "layout" | "tag
  * @param components MDX 내에 사용할 컴포넌트명 배열
  * @returns MDX 파일의 경로, frontmatter, 컨텐츠를 담은 객체의 배열
  */
-export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRemoteProps["components"], ) => {
+export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRemoteProps["components"]) => {
   const filePaths = getAllPostPaths()
   
   return await Promise.all(filePaths
@@ -88,6 +88,8 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
     })
   )
 }
+
+export type ParsedMarkdownType = Awaited<ReturnType<typeof getParsedMarkdowns>>
 
 // todo: 적절한 파일로 옮길 것(ex. data.ts)
 // todo: 마크다운에 적용할 컴포넌트들의 이름을 programmatic하게 추출하여 리스트업 할 것
