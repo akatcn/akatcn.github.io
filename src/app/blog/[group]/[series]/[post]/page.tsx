@@ -1,4 +1,5 @@
 import StaticChip from '@/component/ui/static/StaticChip'
+import { formatDate } from '@/lib/dateUtil'
 import { parsedMarkdowns } from '@/lib/markdownFileUtil'
 import React from 'react'
 
@@ -29,6 +30,7 @@ type PostDetailPageProps = {
 async function PostDetailPage({ params }: PostDetailPageProps) {
   const { group, series, post } = await params
   const matchedMarkdown = parsedMarkdowns.find(md => md.path.includes(`${decodeURIComponent(group)}/${decodeURIComponent(series)}/${decodeURIComponent(post)}.mdx`))
+  const formattedDate = formatDate(new Date(matchedMarkdown?.frontmatter.date ?? ""))
 
   return (
     <article className='max-w-3xl mx-auto'>
@@ -41,7 +43,10 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
             <StaticChip text="JavaScript" selected={true} />
             <StaticChip text="Computer Science" selected={false} />
           </div>
-          <div className='mt-4 text-system-gray-2'>{new Date(matchedMarkdown?.frontmatter.date ?? "").toLocaleString("ko-KR")}</div>
+          {
+            matchedMarkdown?.frontmatter.date &&
+            <div className='mt-4 text-system-gray-2'>{`${formattedDate.year} ${formattedDate.month} ${formattedDate.day}`}</div>
+          }
         </div>
       </div>
       <div className='yhmd'>
