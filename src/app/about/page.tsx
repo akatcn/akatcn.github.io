@@ -1,5 +1,6 @@
 import AffiliationPeriodCard from '@/component/about/AffiliationPeriodCard'
 import ExperienceCard from '@/component/about/ExperienceCard'
+import GitHubIcon from '@/component/about/GitHubIcon'
 import ProjectCard from '@/component/about/ProjectCard'
 import ResumeSection from '@/component/about/ResumeSection'
 import SkillCard from '@/component/about/SkillCard'
@@ -14,10 +15,17 @@ function AboutPage() {
         이용훈입니다
       </h1>
       <div className='text-xl md:text-3xl lg:text-4xl space-y-4 mt-6 mb-16 text-center lg:text-left'>
-        <p><strong>단순함</strong>을 추구합니다</p>
         <p>신뢰도 높은 소프트웨어 <strong>설계</strong>를 고민합니다</p>
+        <p><strong>단순함</strong>을 지향합니다</p>
         <p><strong>프론트엔드 기술</strong>을 통한 문제 해결을 연구합니다</p>
       </div>
+      <ResumeSection title="Contact" hasDivider>
+        <p className='text-xl font-light'>✉️ akatcn@gmail.com</p>
+        <div className='flex gap-x-1 mt-4 items-center'>
+          <GitHubIcon />
+          <a href="https://www.github.com/akatcn" className='text-xl font-light'>github.com/akatcn</a>
+        </div>
+      </ResumeSection>
       <ResumeSection title="Work Experience" hasDivider>
         <ExperienceCard
           organization='뉴빌리티'
@@ -63,23 +71,23 @@ function AboutPage() {
           skillName='Next'
           descriptions={[
             "페이지별 정적/동적 렌더링을 적절히 선택하여 서비스할 수 있습니다",
-            "렌더링된 방식에 알맞는 네비게이팅 방식을 채택하여 Next.js 애플리케이션에 최적화된 네비게이팅 경험을 제공할 수 있습니다"
+            "렌더링 방식에 알맞는 네비게이팅 방식을 채택할 수 있습니다"
           ]}
         />
         <SkillCard
           skillName='JavaScript(Core)'
           descriptions={[
-            "클로저의 동작 원리를 이해하며, 적용해본 경험이 있습니다",
-            "비동기 로직이 엔진에서 처리되는 과정을 이해하고 있으며, 이를 기반으로 **비동기 로직 코드를 작성할 수 있습니다**",
+            "클로저의 동작 원리를 이해하며, 응용해본 경험이 있습니다",
+            "비동기 로직이 엔진에서 처리되는 과정을 이해하며, 이를 기반으로 **비동기 로직 코드를 작성할 수 있습니다**",
             "웹 브라우저 환경과 Node.js 실행 환경 차이를 이해하고 있습니다. 웹 프론트 애플리케이션에 사용가능한 패키지를 구분하여 설치할 수 있습니다",
             "CRA, Vite 없이 React SPA를 빌드한 경험이 있습니다. 개발 환경 설정에 필요한 패키지를 설치할 수 있습니다"
           ]}
         />
         <SkillCard
-          skillName='JavaScript(Web)'
+          skillName='JavaScript(Web Browser)'
           descriptions={[
-            "`LocalStorage`, `SessionStorage`의 차이를 이해하고 있으며, 각 API가 필요한 상황을 구분하고 적용할 수 있습니다",
-            "MDN, ECMAScript 제안서를 참조하여 **기능 구현에 필요한 Web API를 적용**할 수 있습니다",
+            "`LocalStorage`, `SessionStorage` API의 인터페이스를 숙지하고 있습니다. 각 API가 필요한 상황을 구분하고 적용할 수 있습니다",
+            "MDN 문서의 내용을 빠르게 파악하여 **기능 구현에 필요한 Web API를 적용**할 수 있습니다",
             "DOM API의 인터페이스 상속 구조를 이해하고 있습니다"
           ]}
         />
@@ -87,7 +95,8 @@ function AboutPage() {
           skillName='Browser'
           descriptions={[
             "CORS 정책과 이슈 발생 유형을 이해하고 있으며, 대응 시나리오를 숙지하고 있습니다",
-            "`console`의 다양한 출력 방식을 숙지하여 수월한 디버깅 수행이 가능합니다"
+            "XSS, CSRF 등 브라우저 보안 이슈에 대한 이해와 예방 전략에 대해 숙지하고 있습니다.",
+            "HTML 파싱부터 Render Tree 구성, 페인트 과정 등 렌더링 흐름을 이해하고 있으며, 이에 기반한 **퍼포먼스 최적화 경험**이 있습니다"
           ]}
         />
         <SkillCard

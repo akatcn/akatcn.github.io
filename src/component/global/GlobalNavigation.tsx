@@ -28,11 +28,11 @@ function GlobalNavigation() {
             )
           }
         </ul>
-        <div className='flex items-center gap-x-2'>
+        <div className='flex items-center'>
           {/* 라이트 모드로 전환 버튼 */}
           <button className='p-2 rounded-full hover:bg-system-gray-6 cursor-pointer hidden dark:block text-yellow-500' onClick={toggleTheme}><SunIcon /></button>
           {/* 다크 모드로 전환 버튼 */}
-          <button className='p-2 rounded-full hover:bg-system-gray-6 cursor-pointer dark:hidden text-indigo-500' onClick={toggleTheme}><MoonIcon /></button>
+          <button className='p-2 rounded-full hover:bg-system-gray-6 cursor-pointer dark:hidden text-indigo-600' onClick={toggleTheme}><MoonIcon /></button>
           <Link href="/about">
             <span className='font-bold p-2 hover:bg-system-gray-6 rounded-lg'>소개</span>
           </Link>
