@@ -70,7 +70,7 @@ function AboutPage() {
           skillName='JavaScript(Core)'
           descriptions={[
             "클로저의 동작 원리를 이해하며, 적용해본 경험이 있습니다",
-            "비동기 로직이 엔진에서 처리되는 과정을 이해하고 있으며, 이를 기반으로 비동기 로직 코드를 작성할 수 있습니다",
+            "비동기 로직이 엔진에서 처리되는 과정을 이해하고 있으며, 이를 기반으로 **비동기 로직 코드를 작성할 수 있습니다**",
             "웹 브라우저 환경과 Node.js 실행 환경 차이를 이해하고 있습니다. 웹 프론트 애플리케이션에 사용가능한 패키지를 구분하여 설치할 수 있습니다",
             "CRA, Vite 없이 React SPA를 빌드한 경험이 있습니다. 개발 환경 설정에 필요한 패키지를 설치할 수 있습니다"
           ]}
@@ -78,8 +78,8 @@ function AboutPage() {
         <SkillCard
           skillName='JavaScript(Web)'
           descriptions={[
-            "LocalStorage, SessionStorage의 차이를 이해하고 있으며, 각 API가 필요한 상황을 구분하고 적용할 수 있습니다",
-            "MDN, can i use를 참조하여 기능 구현에 필요한 Web API를 검색 및 적용할 수 있습니다",
+            "`LocalStorage`, `SessionStorage`의 차이를 이해하고 있으며, 각 API가 필요한 상황을 구분하고 적용할 수 있습니다",
+            "MDN, ECMAScript 제안서를 참조하여 **기능 구현에 필요한 Web API를 적용**할 수 있습니다",
             "DOM API의 인터페이스 상속 구조를 이해하고 있습니다"
           ]}
         />
@@ -87,13 +87,13 @@ function AboutPage() {
           skillName='Browser'
           descriptions={[
             "CORS 정책과 이슈 발생 유형을 이해하고 있으며, 대응 시나리오를 숙지하고 있습니다",
-            "console의 다양한 출력 방식을 숙지하여 수월한 디버깅 수행이 가능합니다"
+            "`console`의 다양한 출력 방식을 숙지하여 수월한 디버깅 수행이 가능합니다"
           ]}
         />
         <SkillCard
           skillName='TypeScript'
           descriptions={[
-            "제네릭, 조건부 타입을 활용하여 타입들을 조합 및 분리하는 방법을 알고 있습니다"
+            "제네릭, 조건부 타입을 활용하여 **타입들을 조합 및 분리하는 방법**을 숙지하고 있으며, 디자인 시스템 구축에 응용한 경험이 있습니다"
           ]}
         />
         <SkillCard
