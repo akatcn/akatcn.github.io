@@ -17,7 +17,6 @@ function ExperienceCard({ organization, description, startDate, endDate, childre
       </div>
       { hasDivider && <hr className='my-10 text-system-gray-4' /> }
     </>
-    
   )
 }
 

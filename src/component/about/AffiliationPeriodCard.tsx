@@ -15,7 +15,7 @@ function AffiliationPeriodCard({ organization, description, startDate, endDate }
   return (
     <div className='md:mr-48 mb-8'>
       <h3 className='text-3xl font-bold'>{ organization }</h3>
-      <p>{ description }</p>
+      <p className='my-1'>{ description }</p>
       <div className='text-system-gray'>
         <time dateTime={startDate.toDateString()}>{ formattedStartDate }</time>
         <span> ~ </span>
