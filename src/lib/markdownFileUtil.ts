@@ -1,17 +1,16 @@
-import MyComponent from "@/component/MyComponent";
-import fs from "fs";
-import { sync } from "glob";
+import fs from "fs"
+import { sync } from "glob"
 import { compileMDX, MDXRemoteProps } from 'next-mdx-remote/rsc'
-import remarkGfm from "remark-gfm";
-import remarkEmoji from 'remark-emoji';
-import remarkToc from "remark-toc";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeExternalLinks from "rehype-external-links";
-import rehypeSlug from "rehype-slug";
-import Heading1 from "@/component/markdown/Heading1";
-import Heading2 from "@/component/markdown/Heading2";
-import Heading3 from "@/component/markdown/Heading3";
-import Heading4 from "@/component/markdown/Heading4";
+import remarkGfm from "remark-gfm"
+import remarkEmoji from 'remark-emoji'
+import remarkToc from "remark-toc"
+import rehypePrettyCode from "rehype-pretty-code"
+import rehypeExternalLinks from "rehype-external-links"
+import rehypeSlug from "rehype-slug"
+import Heading1 from "@/component/markdown/Heading1"
+import Heading2 from "@/component/markdown/Heading2"
+import Heading3 from "@/component/markdown/Heading3"
+import Heading4 from "@/component/markdown/Heading4"
 
 const SOURCE_PATH = `${process.cwd()}/src`
 
@@ -96,7 +95,6 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
 export type ParsedMarkdownType = Awaited<ReturnType<typeof getParsedMarkdowns>>
 
 const markdownComponents = {
-  MyComponent,
   h1: Heading1,
   h2: Heading2,
   h3: Heading3,
