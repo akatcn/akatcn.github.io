@@ -36,15 +36,15 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
         <h1 className='text-4xl md:text-5xl font-extrabold leading-12 md:leading-15'>{matchedMarkdown?.frontmatter.title}</h1>
         <div className='space-y-2 mt-2'>
           <h2 className='text-2xl text-system-gray'>{matchedMarkdown?.frontmatter.subtitle}</h2>
-          <div className='flex flex-wrap gap-2 mt-4'>
+          {
+            matchedMarkdown?.frontmatter.date &&
+            <div className='text-system-gray-2'>{`${formattedDate.year} ${formattedDate.month} ${formattedDate.day}`}</div>
+          }
+          <div className='flex flex-wrap gap-2'>
             {
               matchedMarkdown?.frontmatter.tags.map(tag => <StaticChip key={tag} text={tag} selected={false} />)
             }
           </div>
-          {
-            matchedMarkdown?.frontmatter.date &&
-            <div className='mt-4 text-system-gray-2'>{`${formattedDate.year} ${formattedDate.month} ${formattedDate.day}`}</div>
-          }
         </div>
       </div>
       <div className='yhmd'>

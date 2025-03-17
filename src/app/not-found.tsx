@@ -1,9 +1,11 @@
 import React from 'react'
 
-// todo: layout의 UI가 나오지 않도록 할 것
 function NotFoundPage() {
   return (
-    <div>NotFoundPage</div>
+    <article className='h-full flex flex-col gap-y-2 items-center justify-center'>
+      <span className='text-8xl font-bold'>404</span>
+      <p className='text-system-gray'>페이지를 찾을 수 없습니다</p>
+    </article>
   )
 }
 
