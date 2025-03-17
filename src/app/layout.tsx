@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "@/style/globals.css";
 import GlobalNavigation from "@/component/global/GlobalNavigation";
 import GlobalFooter from "@/component/global/GlobalFooter";
+import { Metadata } from "next";
 
 const pretendard = localFont({
   src: ".././style/fonts/PretendardVariable.woff2",
@@ -38,6 +39,25 @@ const themeScript = `(function() {
     }
   })
 }())`
+
+export const metadata: Metadata = {
+  title: "YHSpace",
+  description: "프론트엔드 개발자 이용훈의 공간",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/icon1.ico",
+        href: "/icon1.ico",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/icon2.ico",
+        href: "/icon2.ico",
+      }
+    ]
+  }
+};
 
 function RootLayout({ children }: RootLayoutProps) {
   return (
