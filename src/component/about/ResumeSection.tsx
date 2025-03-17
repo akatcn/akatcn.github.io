@@ -10,7 +10,9 @@ function ResumeSection({ title, children, hasDivider = false }: ResumeSectionPro
   return (
     <section>
       <h2 className='text-4xl md:text-5xl font-bold mb-6'>{ title }</h2>
-      {children}
+      <div className='flex flex-col gap-y-8'>
+        {children}
+      </div>
       { hasDivider && <hr className='my-10 text-system-gray-4' /> }
     </section>
   )

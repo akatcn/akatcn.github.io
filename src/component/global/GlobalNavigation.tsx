@@ -3,10 +3,7 @@
 import MoonIcon from '@/component/global/MoonIcon'
 import SunIcon from '@/component/global/SunIcon'
 import { useThemeMode } from '@/hooks/useThemeMode'
-import { GroupNameKrMap } from '@/lib/groupNameMap'
-import classNames from 'classnames'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import React from 'react'
 
 function GlobalNavigation() {

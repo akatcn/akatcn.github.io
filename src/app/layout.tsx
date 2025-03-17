@@ -41,11 +41,11 @@ const themeScript = `(function() {
 
 function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html className="bg-absent text-secondary dark:scheme-dark scroll-smooth" style={{transition: "border-color .5s, background-color .5s"}}>
-      <body className={`${pretendard.className} antialiased`}>
+    <html className="bg-absent text-secondary dark:scheme-dark scroll-smooth h-full" style={{transition: "border-color .5s, background-color .5s"}}>
+      <body className={`${pretendard.className} antialiased h-full flex flex-col`}>
         <script dangerouslySetInnerHTML={{__html: themeScript}} />
         <GlobalNavigation />
-        <main className="max-w-7xl m-auto px-4 md:px-5">
+        <main className="w-full max-w-7xl m-auto px-4 md:px-5 flex-1">
           { children }
         </main>
         <GlobalFooter />

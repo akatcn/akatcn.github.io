@@ -8,7 +8,7 @@ type SkillCardProps = {
 
 function SkillCard({ skillName, descriptions }: SkillCardProps) {
   return (
-    <div className='mb-8'>
+    <div>
       <h3 className='text-3xl font-bold mb-2'>{ skillName }</h3>
       <ul className='list-disc pl-5 font-light'>
         {

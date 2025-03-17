@@ -1,6 +1,5 @@
-import AffiliationPeriodCard from '@/component/about/AffiliationPeriodCard'
+import ContactCard from '@/component/about/ContactCard'
 import ExperienceCard from '@/component/about/ExperienceCard'
-import GitHubIcon from '@/component/about/GitHubIcon'
 import ProjectCard from '@/component/about/ProjectCard'
 import ResumeSection from '@/component/about/ResumeSection'
 import SkillCard from '@/component/about/SkillCard'
@@ -20,11 +19,7 @@ function AboutPage() {
         <p><strong>프론트엔드 기술</strong>을 통한 문제 해결을 연구합니다</p>
       </div>
       <ResumeSection title="Contact" hasDivider>
-        <p className='text-xl font-light'>✉️ akatcn@gmail.com</p>
-        <div className='flex gap-x-1 mt-4 items-center'>
-          <GitHubIcon />
-          <a href="https://www.github.com/akatcn" className='text-xl font-light'>github.com/akatcn</a>
-        </div>
+        <ContactCard />
       </ResumeSection>
       <ResumeSection title="Work Experience" hasDivider>
         <ExperienceCard
@@ -114,22 +109,40 @@ function AboutPage() {
         />
       </ResumeSection>
       <ResumeSection title="Other Experience">
-        <AffiliationPeriodCard
+        <ExperienceCard
           organization='전북대학교'
           description='IT응용공학과, 학사'
           startDate={new Date("2014-03")}
           endDate={new Date("2020-02")}
         />
-        <AffiliationPeriodCard
-          organization='GoSpace' 
-          description='CEO' 
-          startDate={new Date("2020-06")} 
-          endDate={new Date("2021-12")}
+        <ExperienceCard
+          organization='한국과학기술정보연구원'
+          description='인턴'
+          startDate={new Date("2020-09")}
+          endDate={new Date("2021-02")}
         />
-        <AffiliationPeriodCard
-          organization='삼성 청년 SW 아카데미' 
-          description='Java 전공반' 
-          startDate={new Date("2022-06")} 
+        <ExperienceCard
+          organization='GoSpace'
+          description='CEO, CTO'
+          startDate={new Date("2023-06")}
+          endDate={new Date("2025-01")}>
+          <ProjectCard
+            projectName='Go Space'
+            projectDescription='헬스장 운동기구에 부착되어 사용자의 운동량을 기록 및 분석하는 솔루션 개발'
+            tasks={[
+              "IoT 모듈 펌웨어 개발",
+              "iOS 앱 개발 및 배포"
+            ]}
+            keyAchievements={[
+              "서울 시내 회원 1,500여명 규모의 헬스장에서 베타 테스트 진행",
+              '예비 창업 패키지 "우수 기업"으로 평가',
+            ]}
+          />
+        </ExperienceCard>
+        <ExperienceCard
+          organization='삼성 청년 SW 아카데미'
+          description='Java 전공반'
+          startDate={new Date("2022-06")}
           endDate={new Date("2023-06")}
         />
       </ResumeSection>

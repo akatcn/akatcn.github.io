@@ -2,7 +2,7 @@ import AffiliationPeriodCard, { AffiliationPeriodProps } from '@/component/about
 import React, { ReactNode } from 'react'
 
 type ExperienceCardProps = {
-  children: ReactNode
+  children?: ReactNode
   hasDivider?: boolean
 } & AffiliationPeriodProps
 
@@ -11,9 +11,11 @@ function ExperienceCard({ organization, description, startDate, endDate, childre
     <>
       <div className='lg:flex'>
         <AffiliationPeriodCard organization={organization} description={description} startDate={startDate} endDate={endDate} />
-        <div className='flex flex-col gap-y-12'>
-          { children }
-        </div>
+        { children &&
+          <div className='flex flex-col gap-y-8 mt-4'>
+            { children }
+          </div>
+        }
       </div>
       { hasDivider && <hr className='my-10 text-system-gray-4' /> }
     </>
