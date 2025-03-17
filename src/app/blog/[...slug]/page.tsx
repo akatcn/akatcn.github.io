@@ -8,28 +8,26 @@ export const dynamicParams = false
 export const generateStaticParams = async () => {
   return parsedMarkdowns
     .map(markdown => {
-      const segments = markdown.path.split("/")
-      const blogIndex = segments.indexOf("blog")
+      const url = markdown.path.replace(/\.mdx$/, "")
+      const blogIndex = url.indexOf("src/markdown/blog/")
+      const segments = url.slice(blogIndex + "src/markdown/blog/".length)
 
       return {
-        group: segments[blogIndex + 1],
-        series: segments[blogIndex + 2],
-        post: segments[blogIndex + 3].replace(/\.mdx$/, "")
+        slug: segments.split("/").filter(segment => segment.length > 0)
       }
     })
 }
 
 type PostDetailPageProps = {
   params: Promise<{
-    group: string,
-    series: string,
-    post: string,
+    slug: string[]
   }>
 }
 
 async function PostDetailPage({ params }: PostDetailPageProps) {
-  const { group, series, post } = await params
-  const matchedMarkdown = parsedMarkdowns.find(md => md.path.includes(`${decodeURIComponent(group)}/${decodeURIComponent(series)}/${decodeURIComponent(post)}.mdx`))
+  const { slug } = await params
+  const path = decodeURIComponent(slug.join("/"))
+  const matchedMarkdown = parsedMarkdowns.find(md => md.path.includes(`${path}.mdx`))
   const formattedDate = formatDate(new Date(matchedMarkdown?.frontmatter.date ?? ""))
 
   return (
@@ -39,9 +37,9 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
         <div className='space-y-2 mt-2'>
           <h2 className='text-2xl text-system-gray'>{matchedMarkdown?.frontmatter.subtitle}</h2>
           <div className='flex flex-wrap gap-2 mt-4'>
-            <StaticChip text="연구" selected={false} />
-            <StaticChip text="JavaScript" selected={true} />
-            <StaticChip text="Computer Science" selected={false} />
+            {
+              matchedMarkdown?.frontmatter.tags.map(tag => <StaticChip key={tag} text={tag} selected={false} />)
+            }
           </div>
           {
             matchedMarkdown?.frontmatter.date &&

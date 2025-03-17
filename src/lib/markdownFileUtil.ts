@@ -24,14 +24,18 @@ const getAllPostPaths = () => {
 
   return paths
     .filter(path => {
-      const segments = path.split("/")
-      const blogIndex = segments.indexOf("blog")
-      return blogIndex !== -1 && segments.length === blogIndex + 4
+      const url = path.replace(/\.mdx$/, "")
+      const blogIndex = url.indexOf("src/markdown/blog/")
+      return blogIndex !== -1
     })
 }
 
-// todo: 적절한 파일로 옮길 것
-type FrontmatterKeyType = "title" | "subtitle" | "description" | "layout" | "tags" | "date" | "thumbnail"
+type FrontmatterType = {
+  title: string
+  subtitle: string
+  tags: string[]
+  date: string
+};
 
 /**
  * /markdown/blog 아래의 모든 MDX 파일을 파싱하여 반환하는 함수
@@ -45,7 +49,7 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
   return await Promise.all(filePaths
     .map(async (path) => {
       const fileContent = fs.readFileSync(path, 'utf-8');
-      const { frontmatter, content } = await compileMDX<Record<FrontmatterKeyType, string>>({
+      const { frontmatter, content } = await compileMDX<FrontmatterType>({
         source: fileContent,
         components,
         options: {
@@ -91,8 +95,6 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
 
 export type ParsedMarkdownType = Awaited<ReturnType<typeof getParsedMarkdowns>>
 
-// todo: 적절한 파일로 옮길 것(ex. data.ts)
-// todo: 마크다운에 적용할 컴포넌트들의 이름을 programmatic하게 추출하여 리스트업 할 것
 const markdownComponents = {
   MyComponent,
   h1: Heading1,
