@@ -1,4 +1,4 @@
-import { formatDate } from '@/lib/dateUtil'
+import { formatDateKr } from '@/lib/dateUtil'
 import Link from 'next/link'
 import React from 'react'
 
@@ -10,7 +10,7 @@ type PostItemProps = {
 }
 
 function PostItem({ title, subtitle, date, path }: PostItemProps) {
-  const formattedDate = formatDate(date)
+  const formattedDate = formatDateKr(date)
   
   return (
     <li className='relative p-4 group-hover:opacity-50 hover:opacity-100 hover:bg-system-gray-6 rounded-lg' style={{transition: "background-color 0.3s ease-in-out, opacity 0.3s ease-in-out"}}>

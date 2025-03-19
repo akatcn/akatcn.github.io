@@ -1,5 +1,5 @@
 import StaticChip from '@/component/ui/static/StaticChip'
-import { formatDate } from '@/lib/dateUtil'
+import { formatDateKr } from '@/lib/dateUtil'
 import { parsedMarkdowns } from '@/lib/markdownFileUtil'
 import React from 'react'
 
@@ -28,7 +28,7 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
   const { slug } = await params
   const path = decodeURIComponent(slug.join("/"))
   const matchedMarkdown = parsedMarkdowns.find(md => md.path.includes(`${path}.mdx`))
-  const formattedDate = formatDate(new Date(matchedMarkdown?.frontmatter.date ?? ""))
+  const formattedDate = formatDateKr(new Date(matchedMarkdown?.frontmatter.date ?? ""))
 
   return (
     <article className='max-w-3xl mx-auto'>
