@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@import "./markdown.css";
+
+@theme {
+  --color-primary: rgb(33, 33, 33);
+  --color-secondary: rgb(66, 66, 66);
+  --color-present: black;
+  --color-absent: white;
+  --color-system-gray: rgb(142, 142, 147);
+  --color-system-gray-2: rgb(174, 174, 178);
+  --color-system-gray-3: rgb(199, 199, 204);
+  --color-system-gray-4: rgb(209, 209, 214);
+  --color-system-gray-5: rgb(229, 229, 234);
+  --color-system-gray-6: rgb(242, 242, 247);
+  --color-system-sky: var(--color-sky-700);
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@layer base {
+  [data-theme='dark'] {
+    --color-primary: rgb(235, 235, 235);
+    --color-secondary: rgb(215, 215, 215);
+    --color-present: white;
+    --color-absent: black;
+    --color-system-gray: rgb(142, 142, 147);
+    --color-system-gray-2: rgb(99, 99, 102);
+    --color-system-gray-3: rgb(72, 72, 74);
+    --color-system-gray-4: rgb(58, 58, 60);
+    --color-system-gray-5: rgb(44, 44, 46);
+    --color-system-gray-6: rgb(28, 28, 30);
+    --color-system-sky: var(--color-sky-600);
+  }
+}
