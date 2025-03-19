@@ -1,11 +1,11 @@
-export const formatDate = (date: Date) => {
-  const year = String(date.getFullYear())
-  const month = String(date.getMonth() + 1)
-  const day = String(date.getDate())
+export const formatDateKr = (date: Date) => {
+  const year = date.toLocaleDateString("ko-KR", { year: "numeric", timeZone: "Asia/Seoul" })
+  const month = date.toLocaleDateString("ko-KR", { month: "numeric", timeZone: "Asia/Seoul" })
+  const day = date.toLocaleDateString("ko-KR", { day: "numeric", timeZone: "Asia/Seoul" })
 
   return {
-    year: `${year}년`,
-    month: `${month}월`,
-    day: `${day}일`
+    year,
+    month,
+    day
   }
 }

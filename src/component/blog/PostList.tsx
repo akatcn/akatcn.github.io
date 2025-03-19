@@ -11,7 +11,7 @@ function organizePostsByYear(posts: ParsedMarkdownType): { year: number; posts: 
   const postsByYear: { [key: number]: ParsedMarkdownType } = {}
 
   posts.forEach(post => {
-    const year = new Date(post.frontmatter.date).getFullYear()
+    const year = new Date(post.frontmatter.date.split("T")[0]).getFullYear()
     
     if (!postsByYear[year]) {
       postsByYear[year] = []

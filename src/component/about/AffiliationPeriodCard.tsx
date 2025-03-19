@@ -1,4 +1,4 @@
-import { formatDate } from '@/lib/dateUtil'
+import { formatDateKr } from '@/lib/dateUtil'
 import React from 'react'
 
 export type AffiliationPeriodProps = {
@@ -9,8 +9,8 @@ export type AffiliationPeriodProps = {
 }
 
 function AffiliationPeriodCard({ organization, description, startDate, endDate }: AffiliationPeriodProps) {
-  const formattedStartDate = `${formatDate(startDate).year} ${formatDate(startDate).month}`
-  const formattedEndDate = endDate instanceof Date ? `${formatDate(endDate).year} ${formatDate(endDate).month}` : endDate
+  const formattedStartDate = `${formatDateKr(startDate).year} ${formatDateKr(startDate).month}`
+  const formattedEndDate = endDate instanceof Date ? `${formatDateKr(endDate).year} ${formatDateKr(endDate).month}` : endDate
 
   return (
     <div className='md:mr-48'>
