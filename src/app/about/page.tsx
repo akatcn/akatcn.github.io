@@ -30,6 +30,7 @@ function AboutPage() {
           <ProjectCard
             projectName='뉴비고'
             projectDescription='자율주행 로봇 뉴비(Neubie)의 모니터링 및 관리 통합 플랫폼'
+            skills={["Next.js", "TypeScript", "TailwindCSS", "React Hook Form", "Tanstack Query", "Amazon Kinesis"]}
             tasks={[
               "WebRTC 기반 **다중 관제** 서비스 개발 (관제사가 원격으로 여러 로봇 관제 가능)",
               "WebSocket과 StompJS를 활용한 로봇-서버 간 실시간 양방향 통신 기능 개발",
@@ -45,9 +46,11 @@ function AboutPage() {
           <ProjectCard
             projectName='뉴비오더'
             projectDescription='자율주행 로봇 뉴비(Neubie)를 활용한 배달 주문 플랫폼'
+            skills={["Next.js", "TypeScript", "next-i18n"]}
             tasks={[
               "OAuth 2.0 기반의 Third-Party 로그인 기능 개발",
-              "쿠폰 발급 및 적용 UI 개발"
+              "쿠폰 발급 및 적용 UI 개발",
+              "아랍권 고객 대상 국제화 작업"
             ]}
           />
         </ExperienceCard>
