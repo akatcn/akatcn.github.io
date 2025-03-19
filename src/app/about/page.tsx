@@ -127,8 +127,8 @@ function AboutPage() {
         <ExperienceCard
           organization='GoSpace'
           description='CEO, CTO'
-          startDate={new Date("2023-06")}
-          endDate={new Date("2025-01")}>
+          startDate={new Date("2021-06")}
+          endDate={new Date("2022-01")}>
           <ProjectCard
             projectName='Go Space'
             projectDescription='헬스장 운동기구에 부착되어 사용자의 운동량을 기록 및 분석하는 솔루션 개발'
