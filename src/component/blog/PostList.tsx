@@ -41,7 +41,7 @@ function PostList() {
   return (
     organizedPostsByYear.length === 0 ?
     <p className='text-center text-system-gray-2 mt-48'>아직 작성된 글이 없습니다</p> :
-    <section className='group max-w-[60rem] mx-auto lg:mt-14 bg-green-100'>
+    <section className='group max-w-[60rem] mx-auto lg:mt-14'>
       {
         organizedPostsByYear.map(organizedPost => 
           <div key={organizedPost.year} className='group/div flex border-t-1 first:border-t-0 border-system-gray-5 py-4'>
