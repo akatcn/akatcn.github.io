@@ -31,4 +31,7 @@
     --color-system-gray-6: rgb(28, 28, 30);
     --color-system-sky: var(--color-sky-600);
   }
+  * {
+    transition: border-color .5s, background-color .5s
+  }
 }
