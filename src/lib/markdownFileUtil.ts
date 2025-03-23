@@ -36,6 +36,13 @@ type FrontmatterType = {
   date: string
 };
 
+const rehypePrettyCodeOptions = {
+  theme: {
+    dark: "github-dark-dimmed",
+    light: "github-light",
+  }
+}
+
 /**
  * /markdown/blog 아래의 모든 MDX 파일을 파싱하여 반환하는 함수
  * @param tocHeading TOC로 쓰일 제목
@@ -64,7 +71,7 @@ export const getParsedMarkdowns = async (tocHeading: string, components?: MDXRem
               ]
             ],
             rehypePlugins: [
-              rehypePrettyCode,
+              [rehypePrettyCode, rehypePrettyCodeOptions],
               rehypeSlug,
               [
                 rehypeExternalLinks,

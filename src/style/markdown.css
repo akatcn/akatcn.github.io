@@ -6,7 +6,7 @@
   @apply leading-7 py-1;
 }
 .yhmd > hr {
-  @apply border-t-gray-300 my-4;
+  @apply border-t-system-gray-3 my-4;
 }
 .yhmd ul {
   @apply leading-7;
@@ -52,30 +52,43 @@
 }
 
 /* 인라인 코드 스타일링 */
-.yhmd span[data-rehype-pretty-code-figure] > code {
-  @apply rounded px-2 pt-0.5 pb-1;
+.yhmd code {
+  @apply bg-system-gray-6 text-[#EB5757] px-1 py-0.5 rounded font-mono text-sm inline-block
 }
 
 /* 코드 블럭 스타일링 */
-.yhmd figure[data-rehype-pretty-code-figure] > pre {
-  @apply py-4 rounded-md overflow-auto;
-}
-.yhmd figure[data-rehype-pretty-code-figure] span[data-line] {
-  @apply px-4;
-}
-.yhmd figure[data-rehype-pretty-code-figure] {
-  @apply my-1
+.yhmd figure[data-rehype-pretty-code-figure] > pre > code {
+  @apply py-4 px-0 rounded-md overflow-auto;
+  span[data-line] {
+    @apply px-3
+  }
 }
 
-/* 코드 블럭 > 하이라이팅 라인 스타일링 */
-.yhmd span[data-highlighted-line] {
-  @apply bg-indigo-200/10;
+html[data-theme*="light"] .yhmd {
+  code[data-theme*="github-light"],
+  code[data-theme*="github-light"] span {
+    color: var(--shiki-light);
+  }
+  code[data-theme*="github-light"] span[data-highlighted-line] {
+    @apply bg-indigo-400/10
+  }
+}
+
+html[data-theme="dark"] .yhmd {
+  code[data-theme*="github-dark-dimmed"],
+  code[data-theme*="github-dark-dimmed"] span {
+    color: var(--shiki-dark);
+  }
+  code[data-theme*="github-dark-dimmed"] span[data-highlighted-line] {
+    @apply bg-indigo-200/10
+  }
 }
 
 /* 코드 블럭 > 라인 넘버 스타일링 */
 .yhmd code[data-line-numbers] {
   counter-reset: line;
 }
+
 .yhmd code[data-line-numbers] > [data-line]::before {
   counter-increment: line;
   content: counter(line);
@@ -84,6 +97,7 @@
   text-align: right;
   color: gray;
 }
+
 .yhmd code[data-line-numbers-max-digits="2"] > [data-line]::before {
   width: 1.25rem;
 }
@@ -94,6 +108,7 @@
   width: 2.25rem;
 }
 
+/* 인용구 스타일링 */
 .yhmd blockquote {
   @apply relative px-14 py-8 my-1;
   @apply border-l-8 border-l-system-gray-2;

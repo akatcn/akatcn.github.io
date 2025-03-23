@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 
 function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html className="bg-absent text-secondary dark:scheme-dark scroll-smooth h-full" style={{transition: "border-color .5s, background-color .5s"}}>
+    <html className="bg-absent text-secondary dark:scheme-dark scroll-smooth h-full">
       <body className={`${pretendard.className} antialiased h-full flex flex-col`}>
         <script dangerouslySetInnerHTML={{__html: themeScript}} />
         <GlobalNavigation />
