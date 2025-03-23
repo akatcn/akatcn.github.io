@@ -32,7 +32,7 @@ async function PostDetailPage({ params }: PostDetailPageProps) {
 
   return (
     <article className='max-w-3xl mx-auto'>
-      <div className='my-8 md:my-14 pb-6 border-b-1 border-gray-300'>
+      <div className='my-8 md:my-14 pb-6 border-b-1 border-system-gray-3'>
         <h1 className='text-4xl md:text-5xl font-extrabold leading-12 md:leading-15'>{matchedMarkdown?.frontmatter.title}</h1>
         <div className='space-y-2 mt-2'>
           <h2 className='text-2xl text-system-gray'>{matchedMarkdown?.frontmatter.subtitle}</h2>

@@ -10,7 +10,7 @@ function GlobalNavigation() {
   const { toggleTheme } = useThemeMode()
 
   return (
-    <nav className='sticky top-0 w-full z-50 border-b-1 border-b-system-gray-5 bg-absent' style={{transition: "border-color .5s, background-color .5s"}}>
+    <nav className='sticky top-0 w-full z-50 border-b-1 border-b-system-gray-5 bg-absent'>
       <div className='flex items-center justify-between max-w-7xl m-auto py-2 px-4 md:px-5'>
         <Link href="/">
           <p className='font-bold md:text-lg'>YHSpace</p>
