@@ -32,11 +32,11 @@
   @apply list-[lower-alpha];
 }
 .yhmd > p a {
-  @apply relative inline-block text-primary font-[475] underline underline-offset-4 decoration-system-gray-4;
+  @apply relative inline-block text-primary underline underline-offset-4 decoration-system-gray-4;
   transition: text-decoration-color .5s
 }
 .yhmd > p a::before {
-  @apply absolute -top-0.5 -left-1 -right-1 -bottom-0.5 -z-1;
+  @apply absolute -top-0 -left-1 -right-1 -bottom-0 -z-1;
   @apply bg-transparent rounded-sm;
   content: "";
   transition: background-color 0.3s ease;

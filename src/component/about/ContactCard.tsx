@@ -9,7 +9,7 @@ function ContactCard() {
       </address>
       <div className='flex gap-x-1 mt-4 items-center'>
         <GitHubIcon />
-        <a href="https://www.github.com/akatcn" className='text-xl font-light border-b-1 border-b-system-gray-3'>github.com/akatcn</a>
+        <a href="https://www.github.com/akatcn" target="_blank" className='text-xl font-light border-b-1 border-b-system-gray-3'>github.com/akatcn</a>
       </div>
     </div>
   )

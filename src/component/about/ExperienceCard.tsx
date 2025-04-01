@@ -12,7 +12,7 @@ function ExperienceCard({ organization, description, startDate, endDate, childre
       <div className='lg:flex'>
         <AffiliationPeriodCard organization={organization} description={description} startDate={startDate} endDate={endDate} />
         { children &&
-          <div className='flex flex-col gap-y-8 mt-4'>
+          <div className='flex flex-col gap-y-8 mt-2'>
             { children }
           </div>
         }
