@@ -26,21 +26,15 @@ function AboutPage() {
           organization='뉴빌리티'
           description='Frontend Developer'
           startDate={new Date("2023-06")}
-          endDate={new Date("2025-01")}>
+          endDate={new Date("2025-02")}>
           <ProjectCard
             projectName='뉴비고'
             projectDescription='자율주행 로봇 뉴비(Neubie)의 모니터링 및 관리 통합 플랫폼'
-            skills={["Next.js", "TypeScript", "TailwindCSS", "React Hook Form", "Tanstack Query", "Amazon Kinesis"]}
+            skills={["Next.js", "TypeScript", "TailwindCSS", "React Hook Form", "Tanstack Query", "AmazonKinesis"]}
             tasks={[
-              "WebRTC 기반 **다중 관제** 서비스 개발 (관제사가 원격으로 여러 로봇 관제 가능)",
-              "WebSocket과 StompJS를 활용한 로봇-서버 간 실시간 양방향 통신 기능 개발",
-              "Tailwind와 CVA를 사용한 뉴빌리티 **디자인 시스템 구축**",
-              "React Hook Form을 활용한 form 다이얼로그 개발"
-            ]}
-            keyAchievements={[
-              "Pre-connection 기능 개발로 관제 화면 로드 시간 감소(15초 → 2초, **87% 단축**, UX 개선)",
-              "중복 컴포넌트 통합으로 개발 스토리 포인트 감소(SP 5 → SP 2, **60% 감소**, 생산성 증대)",
-              "일부 전역 컨테이너를 지역 컨테이너로 리팩토링하여 불필요한 API 요청 제거(성능 최적화)"
+              "사우디 아라비아에서도, 플로리다에서도 관제 이슈 0건! 높은 신뢰도를 보여준 WebRTC 기반의 **다중 관제** 서비스 개발",
+              "TailwindCSS, CVA, TypeScript를 사용한 뉴빌리티 **디자인 시스템** 구축",
+              "STOMP over WebSocket을 통해 로봇과 서버의 RabbitMQ로부터 메시지를 구독하여 로봇 데이터(속도, 방향, 자율주행 여부 등) 기반의 UI 컴포넌트 개발"
             ]}
           />
           <ProjectCard
@@ -59,8 +53,8 @@ function AboutPage() {
         <SkillCard
           skillName='React'
           descriptions={[
-            "컴포넌트 렌더링 과정과 **Effect의 라이프사이클을 이해**하며, 이를 기반으로 컴포넌트와 Hook을 설계할 수 있습니다",
-            "순수한 컴포넌트를 만들기 위해 노력합니다. **불필요한 Effect 사용을 지양**하며, 렌더링 과정중에 state와 props로부터의 계산이 가능한지 항상 점검합니다",
+            "컴포넌트 렌더링 과정과 **Effect의 설계 철학을 이해**하며, 이를 기반으로 컴포넌트와 Hook을 설계할 수 있습니다",
+            "순수한 컴포넌트를 만들기 위해 노력합니다. **불필요한 Effect 사용을 지양**하며, 렌더링 과정중에 state와 props로 부터 계산이 가능한지 항상 점검합니다",
             "React의 단방향 데이터 흐름을 적극 활용합니다. props driling이 과도하게 발생하지 않는 이상 컨테이너 사용을 최대한 지양합니다",
             "로직과 UI 분리를 위해 custom Hook을 애용합니다"
           ]}
@@ -82,11 +76,11 @@ function AboutPage() {
           ]}
         />
         <SkillCard
-          skillName='JavaScript(Web Browser)'
+          skillName='JavaScript(Web)'
           descriptions={[
             "`LocalStorage`, `SessionStorage` API의 인터페이스를 숙지하고 있습니다. 각 API가 필요한 상황을 구분하고 적용할 수 있습니다",
-            "MDN 문서의 내용을 빠르게 파악하여 **기능 구현에 필요한 Web API를 적용**할 수 있습니다",
-            "DOM API의 인터페이스 상속 구조를 이해하고 있습니다"
+            "DOM API의 인터페이스 상속 구조를 이해하고 있습니다",
+            "MDN 문서를 탐색하여 **기능 구현에 필요한 Web API를 적용**할 수 있습니다"
           ]}
         />
         <SkillCard
@@ -100,14 +94,8 @@ function AboutPage() {
         <SkillCard
           skillName='TypeScript'
           descriptions={[
-            "제네릭, 조건부 타입을 활용하여 **타입들을 조합 및 분리하는 방법**을 숙지하고 있으며, 디자인 시스템 구축에 응용한 경험이 있습니다"
-          ]}
-        />
-        <SkillCard
-          skillName='StompJS'
-          descriptions={[
-            "STOMP 프로토콜의 아키텍쳐를 이해하고 있습니다",
-            "StompJS의 API를 활용하여 애플리케이션 요구사항에 맞는 클래스/Hook을 구현할 수 있습니다"
+            "Type Manipulation 문법을 활용하여 **타입들을 조합 및 분리하는 방법**을 숙지하고 있으며, 디자인 시스템 구축에 응용한 경험이 있습니다",
+            "제네릭을 활용하여 타입의 추상화 및 재사용성을 높일 수 있습니다"
           ]}
         />
       </ResumeSection>
