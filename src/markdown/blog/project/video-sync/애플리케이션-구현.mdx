@@ -1,0 +1,413 @@
+---
+title: 비디오 싱크 플레이어 만들기(5)
+subtitle: 기본 기능 구현
+tags:
+  - 구현
+  - 비디오 싱크 플레이어
+date: 2025-05-19T00:00:00+09:00
+---
+
+**매우 잘 동작한다!** 걱정했던 demuxing도 잘 되었고, 영상의 싱크도 아주 잘 맞는다. 더 면밀하게 테스트 해야 완결이 나겠지만, 체감상 80% 정도 완성한 것 같다. 이쯤에서 어려웠던 것들과, 트러블 슈팅을 어떻게 하였는지 기록하려 한다
+
+---
+
+## Demuxing & Decoding
+예상했던 것 처럼 영상 파일을 가져와 `VideoFrame`을 추출하는 과정이 가장 난해하였다. 영상 파일에서 프레임 단위로 정보를 추출하는 프로세스 전반에 대한 이해가 선행되지 않으니, 적절한 패키지를 선정해놓았다 한들 코드를 단 한줄도 적을 수 없었다. 이러한 이유로, 영상 처리에서 사용되는 용어와 프로세스 전반에 대한 간략한 이해를 먼저 시도하였다. demuxing이란 무엇인지, 컨테이너란 무엇인지, 코덱은 어떻게 동작하는지 등등에 대해서 말이다. 다행히 그리 어렵고 복잡한 개념은 아니었기에 얕은 수준에서의 이해는 금방하였다. 여기서 얻은 가장 중요한 지식은 바로 demuxing이었다. **demuxing이란 멀티미디어 파일에서 비디오, 오디오, 자막 등의 트랙을 분리해내는 과정**을 말한다. 일전엔 demuxing을 영상 데이터를 low-level 수준으로 완전 분해하는 작업으로 막연하게 생각하였는데, 그보단 조금 더 가벼운 작업이었던 것임을 알게 되었다
+
+이후엔 구글에서 작성한 문서 [Video processing with WebCodecs](https://developer.chrome.com/docs/web-platform/best-practices/webcodecs)를 살펴보았다. WebCodecs API를 영상 처리 워크플로우를 아주 친절히 안내한 문서로써, WebCodecs API가 어떻게 동작하는지, 어떤 역할을 하는지, 어떤 API를 사용하는지에 대해 빠르게 알 수 있었다. 하지만 아쉽게도 내가 수행하려는 작업(영상 파일 -> `VideoFrame` 추출)이 기술되어있지는 않았다. 하지만 한 가지 힌트는 얻을 수 있었다. 인코딩된 영상 데이터로부터 `VideoFrame`을 얻기 위해선 `VideoDecoder`를 사용하면 된다는 사실을 말이다
+
+위를 종합하여 다음과 같은 프로세스를 거쳐 `VideoFrame`을 추출 해야겠다는 작은 설계를 하였다:
+
+![영상 처리 플로우](/markdown/blog/project/video-sync/video_processing_flow.png)
+
+1. (Demuxing)내가 사용하려는 것은 영상 정보만이기 때문에 음성 정보, 자막 정보는 필요가 없다. demuxing을 통해 비디오 트랙만을 추출한다
+2. (`EncodedVideoChunk`로 래핑)추출된 비디오 트랙은 이미 인코딩 되어있다. 이런 경우라면 `VideoDecoder.decode()`를 통해 `VideoFrame`을 추출할 수 있다. `decode()` 메소드는 `EncodedVideoChunk` 객체만을 인수로 받으므로 `EncodedVideoChunk`로의 래핑이 선행되어야 한다
+3. (Decoding)래핑된 데이터에 대해 `decode()`를 수행하여 `VideoFrame`을 생성할 수 있다
+
+물론 이렇게 물흐르듯 쉽게 구현 되지는 않았다. **특히 `VideoDecoder` 인스턴스에 대한 configuration 과정이 정말 난해하였다.** `config` 객체를 생성하기 위해선 추출한 비디오 트랙에서 프로퍼티를 적절히 선택 및 가공해야 했는데 이를 위해선 mp4box.js 패키지의 API를 이해해야 함은 물론이었고, decoding 작업 자체에 대한 이해 또한 요구 되었다
+
+다행히도 막막했던 순간에 W3C에서 만든 [WebCodecs API Sample](https://w3c.github.io/webcodecs/samples/) 애플리케이션을 보았고, 여기에 들어가 소스코드를 분석한 뒤 내 애플리케이션에 맞게 수정하여 기능 구현을 할 수 있었다(소스코드는 video-sync-player 레포의 `mp4BoxUtils.ts`를 참조)
+
+이렇게 너무나 생소한 작업, 패키지, API를 다루며 한 가지 배운 점이 있다. 바로 **데이터의 흐름을 기준 잡은다음 로직을 설계하는 과정이 정말 유용하다**는 것이다. 데이터 흐름을 기준잡고 로직을 설계하면 어느 시점에 어떤 API를 써야할지가 명확해짐을 느꼈다. 그러다보니 암호문처럼 보이기만 하던 공식문서, API 명세서가 눈에 들어오기 시작하며 로직에 대한 이해도가 점점 높아졌다
+
+---
+
+## 하나의 Effect를 세 개의 커스텀 Hook으로 분리
+첫 구현때는 마운트시 발생하는 모든 로직(워커 생성, `offscreenCanvas` 생성 등)을 하나의 Effect 안에서 해결하였다:
+
+```typescript
+useEffect(() => {
+  const worker = new Worker(new URL(PlayerWorker, import.meta.url), { type: 'module' })
+  const canvas = canvasRef.current
+  if (!canvas || workerRef.current) { return }
+
+  // 워커 업데이트
+  workerRef.current = worker
+
+  // offscreenCanvas 생성 및 전송
+  const offscreenCanvas = canvas.transferControlToOffscreen()
+  worker.postMessage({ type: "canvas", offscreenCanvas }, [offscreenCanvas])
+
+  // 시계 동기화
+  const fetchTime = async () => {
+    const requestAt = performance.now()
+    const response = await fetch(`http://localhost:3000/time`);
+    const { timeStamp: tServer } = await response.json()
+    const receivedAt = performance.now()
+    const rtt = receivedAt - requestAt
+
+    const estimatedServerTime = tServer + (rtt / 2)
+    const msg: WorkerMessageType = {
+      type: "timestamp",
+      estimatedServerTime,
+      mainTimeOrigin: performance.timeOrigin,
+      mainReceivedAt: receivedAt
+    }
+    worker.postMessage(msg)
+  }
+  fetchTime()
+
+  return () => {
+    worker.terminate()
+  }
+}, [])
+```
+
+상당히 편리하였고, 구현도 매우 빨랐다. 하지만 다음 몇가지 아쉬운 부분들이 눈에 보였다:
+1. 코드의 가독성 측면에서 좋지 않았다. 모든 로직이 하나의 Effect에 몰려있으니 파악해야할 맥락의 갯수가 많아 눈에 잘 들어오지 않았다
+2. 책임 분리가 되어있지 않았다. Effect가 처리하는 일이 너무 많아 책임소재가 명확하지 않았다. 모두 읽은다음에야 이 Effect가 어떤 일을 하는지 알 수 있었다
+3. (아집일 수도 있지만)계층화가 되어있지 않았다. 비즈니스 로직인데도 불구하고 UI 로직들과 같은 레벨에 나란히 존재하였다
+
+이러한 문제점들을 해결하고자 평소 애용하는 커스텀 Hook을 사용하였다. 가장 먼저 크게 두 개의 Hook으로 나누었고, 나중에 변경된 기획(시계 동기화 로직을 수동 -> 자동으로 수행)에 따라 총 세개의 커스텀 Hook으로 하나의 Effect에 들어갈 로직을 분리하고 묶었다
+
+### useWorker: 워커를 생성 및 관리하는 Hook
+
+```typescript
+/* useWorker.ts */
+type UseWorkerProps = {
+  path: string;
+  onmessage: (e: MessageEvent) => void;
+}
+
+const useWorker = ({ path, onmessage }: UseWorkerProps) => {
+  const workerRef = useRef<Worker | null>(null);
+  const [isWorkerReady, setIsWorkerReady] = useState(false);
+
+  useEffect(() => {
+    const worker = new Worker(new URL(path, import.meta.url), { type: 'module' })
+    // 워커 세팅 예약
+    const workerReadyTimerId = setTimeout(() => {
+      setIsWorkerReady(true)
+      workerRef.current = worker
+    }, 0)
+
+    return () => {
+      const msg: WorkerMessageType = {
+        type: "command",
+        command: "close"
+      }
+      worker.postMessage(msg)
+      workerRef.current = null
+      clearTimeout(workerReadyTimerId)  // 워커 세팅 예약 취소
+    }
+  }, [path])
+
+  useEffect(() => {
+    if (workerRef.current) {
+      workerRef.current.onmessage = onmessage
+    }
+  }, [onmessage])
+
+  return {
+    workerRef,
+    isWorkerReady
+  }
+}
+```
+
+사용자 컴포넌트로부터 워커 스크립트가 정의된 파일의 경로(`path`)와 `onmessage` 콜백 함수를 입력으로 받는다. 최초엔 워커 준비 완료 여부를 나타내는 `isWorkerReady` state를 사용하지 않았는데, Strict Mode에 대응하는 과정에서 재렌더링 과정에서 워커는 마지막 한 번만 준비되어야 함을 알고 `isWorkerReady` state를 추가하였다(자세한 내용은 [Thanks to Strict Mode](/blog/project/video-sync/애플리케이션-구현#thanks-to-strict-mode)에 후술)
+
+
+### useOffscreenCanvas: OffscreenCanvas를 생성하고 워커에 전달하는 Hook
+
+```typescript
+/* useOffscreenCanvas.ts */
+type UseOffscreenProps = {
+  canvasRef: RefObject<HTMLCanvasElement | null>;
+  workerRef: RefObject<Worker | null>;
+  isWorkerReady: boolean;
+}
+
+const useOffscreenCanvas = ({ canvasRef, workerRef, isWorkerReady }: UseOffscreenProps) => {
+  const prevOffscreenRef = useRef<OffscreenCanvas>(null)
+
+  useEffect(() => {
+    const prevOffscreenCanvas = prevOffscreenRef.current
+    const worker = workerRef.current
+    const canvas = canvasRef.current
+    if (prevOffscreenCanvas || !isWorkerReady || !worker || !canvas) { return }
+
+    const offscreenCanvas = canvas.transferControlToOffscreen()
+    prevOffscreenRef.current = offscreenCanvas
+
+    const msg: CanvasMessageType = { type: "canvas", offscreenCanvas }
+    worker.postMessage(msg, [offscreenCanvas])
+  }, [workerRef, canvasRef, isWorkerReady])
+}
+```
+
+offscreen을 사용하는 것과 offscreen을 워커에게 보내는 것이 항상 같이 수행되므로, 두 로직을 하나의 custom Hook에 묶었다
+
+
+### useSyncTime: 서버와 통신하여 시계 동기화를 수행하고 이 정보를 워커에 전달하는 Hook
+
+```typescript
+/* useSyncTime.ts */
+type UseSyncTimeProps = {
+  workerRef: RefObject<Worker | null>;
+  isWorkerReady: boolean;
+}
+
+const BASE_INTERVAL_TIME = 60_000 * 3;  // 3분
+const OFFSET_MIN = 60_000 * 2;  // 2분
+const OFFSET_MAX = 60_000 * 12;  // 12분
+
+const useSyncTime = ({ workerRef, isWorkerReady }: UseSyncTimeProps) => {
+  const getServerTime = async () => {
+    /* ---------- todo: 로직 변경 예정 ----------- */
+    const requestAt = performance.now()
+    const response = await fetch(`http://localhost:3000/time`);
+    const { timeStamp: tServer } = await response.json()
+    const receivedAt = performance.now()
+    const rtt = receivedAt - requestAt
+    /* ---------------------------------------- */
+
+    const estimatedServerTime = tServer + (rtt / 2)  // 크리스티안 알고리즘
+
+    return {
+      estimatedServerTime,
+      timeOrigin: performance.timeOrigin,
+      receivedAt
+    }
+  }
+
+  useEffect(() => {
+    const fetchTime = async () => {
+      const worker = workerRef.current;
+      if (!worker || !isWorkerReady) { return }
+      const { estimatedServerTime, timeOrigin, receivedAt } = await getServerTime()
+      const msg: WorkerMessageType = {
+        type: "timestamp",
+        estimatedServerTime,
+        mainTimeOrigin: timeOrigin,
+        mainReceivedAt: receivedAt
+      }
+      worker.postMessage(msg)
+    }
+    fetchTime()
+
+    const randomOffset = Math.floor(Math.random() * (OFFSET_MAX - OFFSET_MIN + 1)) + OFFSET_MIN;
+    const timerId = setInterval(() => {
+      fetchTime()
+    }, BASE_INTERVAL_TIME + randomOffset)
+
+    return () => {
+      clearInterval(timerId)
+    }
+  }, [workerRef, isWorkerReady])
+}
+```
+
+이렇게 분리하니 각 Hook마다 책임소재가 명확해졌고 상술했던 문제점들이 해소되었다. 특히 `use~`와 같은 추상화 작명으로 인해 "워커가 생성되고, `offscreenCanvas`를 사용하고, 시계 동기화가 수행되겠구나" 라는 빠른 파악이 가능해진게 가장 좋았다(이 느낌때문에 커스텀 Hook을 매번 사용한다)
+
+하지만 항상 좋으리란 법은 없었다. 예상하지 못했던 난관이 strict mode에서 발생하였다. 하나의 Effect를 여러 개의 Hook으로 나누면서 여러 개의 Effect가 생성되었고, strict mode의 실행 방식(의도적인 재렌더링)에 따라 에러들이 나왔다. 물론 strict mode의 설계 의도에 따라 이 에러들은 문제점들을 미리 알려주는 좋은 에러였다(자세한건 트러블 슈팅에서 후술)
+
+---
+
+## 트러블 슈팅
+
+### TypeScript 이슈
+WebCodecs API 자체는 동영상 파일에 대한 demuxing을 지원하지 않기 때문에 별도의 패키지를 사용해야만 했다. MDN과 구글 문서에서 모두에서 추천하는 패키지는 [mp4box.js](https://github.com/gpac/mp4box.js/)였기에 이를 사용하였다
+
+하지만 해당 라이브러리가 TypeScript를 공식으로 지원하지 않아 별도의 타입 선언 파일을 설정 했어야만 했다. 다행히도 관련된 [Issue](https://github.com/gpac/mp4box.js/issues/233)를 찾을 수 있었고, 그곳에서 선언 모듈까지 함께 구할 수 있었다:
+
+```typescript
+declare module "mp4box" {
+  interface MP4MediaTrack
+  {
+    id: number;
+    created: Date;
+    modified: Date;
+    movie_duration: number;
+    movie_timescale: number;
+    layer: number;
+    // ...
+  }
+  // ...
+}
+```
+
+TypeScript는 워커에서도 올바른 정적 타이핑을 못하였다. 일반적인 웹 워커는 `DedicatedWorkerGlobalScope`를 따르는데, 워커 내부에서 해당 스코프를 참조하기 위해 `self` 키워드를 사용한다. 하지만 적절한 설정을 하지 않을경우 TypeScript는 워커 파일 내의 self를 `Window`로 참조한다. 올바르게 `DedicatedWorkerGlobalScope`를 참조하게끔 하려면 다음과 같이 타입을 선언해야 한다:
+```typescript
+/* playerWorker.ts */
+// TypeScript가 self를 Window로 참조하지 않도록 설정
+declare let self: DedicatedWorkerGlobalScope;
+export {};
+
+// ...
+```
+
+`tsconfig` 또한 수정해야한다. `"lib"` 프로퍼티에 `"WebWorker"`를 추가한다:
+
+```json {4}
+/* tsconfig.json */
+{
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "WebWorker"],
+    // ...
+  }
+  // ...
+}
+```
+
+### Thanks to Strict Mode
+상술했듯 세 개의 커스텀 Hook을 사용하여 일부 로직의 추상화를 하였다. 하나의 Effect로 묶었을 때 발생하지 않았던 에러가 strict mode로 인해 발생하였다. 에러의 발생 원인은 단 한번만 실행되어야 할 로직이 여러 번 실행되어서 발생하는 에러였다. `useOffscreenCanvas` Hook의 Effect 두 곳에서 에러가 발생하였다:
+
+```typescript {9, 12}
+/* useOffscreenCanvas.ts */
+const useOffscreenCanvas = ({ canvasRef, workerRef }: UseOffscreenProps) => {
+  useEffect(() => {
+    const worker = workerRef.current
+    const canvas = canvasRef.current
+    if (!worker || !canvas) { return }
+
+    // ❌ InvalidStateError
+    const offscreenCanvas = canvas.transferControlToOffscreen()
+
+    // ❌ DataCloneError
+    worker.postMessage({ type: "canvas", offscreenCanvas }, [offscreenCanvas])
+  }, [workerRef, canvasRef])
+}
+```
+
+- `InvalidStateError` 에러:
+  - `transferControlToOffscreen` 메소드는 canvas 엘리먼트의 렌더링 제어권을 `offscreenCanvas로` 전달(transfer)한다
+  - 이미 `canvas` 엘리먼트에 대한 제어권이 전달되었는데, `canvas.transferControlToOffscreen()`로 존재하지 않는 제어권을 전달하려하니 에러가 발생하는 것이다
+- `DataCloneError` 에러:
+  - `offscreenCanvas`는 transferable 객체이므로 `postMessage()`를 통해 전달할 경우 소유권 또한 전달된다
+  - 이미 `offscreenCanvas`에 대한 소유권이 워커 스레드에 전달되었는데, `postMessage()`로 존재하지 않는 소유권을 보내려하니 에러가 발생하는 것이다
+
+제어권이나 소유권을 다시 되돌릴 수 있는 API가 존재하지 않기때문에(적어도 내가 찾아본 바로는 그렇다), cleanup funciton을 활용하여 제어권과 소유권을 원복시킬 수 없다. 결국 이 로직은 **단 한번만 실행되어야만 함을 알게되었다**. 만일 strict mode가 아니었더라면 여러번 실행되었을 때 에러가 발생한다는 사실을 몰랐을 것이다. strict mode에게 고마워지는 순간이다
+
+단 한번만 실행하기 위해 다음과 같이 이미 생성된 `offscreenCanvas`를 참조할 수 있는 ref 객체를 추가하였다:
+```typescript {3, 9, 12}
+/* useOffscreenCanvas.ts */
+const useOffscreenCanvas = ({ canvasRef, workerRef, isWorkerReady }: UseOffscreenProps) => {
+  const prevOffscreenRef = useRef<OffscreenCanvas>(null)
+  
+  useEffect(() => {
+    const worker = workerRef.current
+    const canvas = canvasRef.current
+    const prevOffscreenCanvas = prevOffscreenRef.current
+    if (prevOffscreenCanvas || !worker || !canvas) { return }
+
+    const offscreenCanvas = canvas.transferControlToOffscreen()
+    prevOffscreenRef.current = offscreenCanvas
+
+    worker.postMessage({ type: "canvas", offscreenCanvas }, [offscreenCanvas])
+  }, [workerRef, canvasRef])
+}
+```
+
+이제 `offscreenCanvas` 생성과 이를 워커 스레드에 `postMessage`하는 로직은 한 번만 동작한다. 그래서 에러 또한 사라졌다! 하지만 이상하게도 워커 스레드에서 메시지를 수신하지 않고 있었다. 혼란스러웠다. 분명 `postMessge`가 정상 실행되는 것을 확인하였는데 왜 워커 스레드는 이를 받지 못하는 것일까??
+
+strict mode를 끄면 잘 받아지니 이를 끄고 사용할까 하는 생각도 강하게 드는 시점이었다. 하지만 조금더 살펴보며 문제점을 찾았다. 문제는 `useWorker`의 Effect에 있었다:
+```typescript {10}
+/* useWorker.ts */
+const useWorker = ({ path, onmessage }: UseWorkerProps) => {
+  const workerRef = useRef<Worker | null>(null)
+
+  useEffect(() => {
+    const worker = new Worker(new URL(path, import.meta.url), { type: 'module' })
+    workerRef.current = worker
+
+    return () => {
+      worker.terminate()  // 너무 빨리 terminate된다
+      workerRef.current = null
+    }
+  }, [path])
+}
+```
+
+순전히 타이밍 이슈였다:
+1. `useWorker의` Effect 실행 -> 워커 생성
+2. `useOffscreenCanvas`의 Effect 실행 -> `if`문 통과 -> `offscreenCanvas` 생성 및 `postMessage` 실행
+3. (strict mode에 의해)`useWorker`의 cleanup function 동작 -> `worker.terminate()` 실행
+4. **워커가 메시지를 받기도 전에 terminate 되므로 메시지를 수신할 수 없음**
+
+정리하자면 워커에 `postMessage`로 `offscreenCanvas`를 보냈지만 **곧바로 워커를 `terminate`하니 메시지 수신이 이뤄지지 않았던 것**이다. 이를 해결하기 위해 `useWorker`에 워커의 준비가 완료되었음을 알리는 상태를 추가하였다:
+
+```typescript {4, 8-12, 17}
+/* useWorker.ts */
+const useWorker = ({ path, onmessage }: UseWorkerProps) => {
+  const workerRef = useRef<Worker | null>(null);
+  const [isWorkerReady, setIsWorkerReady] = useState(false)  // 워커 준비 여부 상태 추가
+
+  useEffect(() => {
+    const worker = new Worker(new URL(path, import.meta.url), { type: 'module' })
+    // 워커 세팅 예약
+    const workerReadyTimerId = setTimeout(() => {
+      setIsWorkerReady(true)
+      workerRef.current = worker
+    }, 0)
+
+    return () => {
+      worker.terminate()
+      workerRef.current = null
+      clearTimeout(workerReadyTimerId)  // 워커 세팅 취소
+    }
+  }, [path])
+}
+```
+
+워커를 세팅하는 작업이 `setTimeout` 내부에 들어가 있는 것을 확인할 수 있는데, 이는 cleanup function이 실행될 때에는 워커를 세팅하지 않도록(=워커가 단 한번만 세팅되도록)하기 위해 사용하였다
+
+이후 `useOffscreenCanvas`는 워커가 완전히 준비되었을 때만 '`offscreenCanvas` 생성 및 `postMessage` 실행'이 되게끔 하였다:
+
+```typescript {2, 9, 15}
+/* useOffscreenCanvas.ts */
+const useOffscreenCanvas = ({ canvasRef, workerRef, isWorkerReady }: UseOffscreenProps) => {
+  const offscreenRef = useRef<OffscreenCanvas>(null);
+
+  useEffect(() => {
+    const prevOffscreenCanvas = offscreenRef.current
+    const worker = workerRef.current
+    const canvas = canvasRef.current
+    if (prevOffscreenCanvas || !isWorkerReady || !worker || !canvas) { return }
+
+    const offscreenCanvas = canvas.transferControlToOffscreen()
+    offscreenRef.current = offscreenCanvas
+
+    worker.postMessage({ type: "canvas", offscreenCanvas }, [offscreenCanvas])
+  }, [workerRef, canvasRef, isWorkerReady])  // isWorkerReady 추가
+}
+```
+이제 문제없이 잘 동작한다
+
+이렇게 strict mode에 대응하며 한 가지 배운 점이 있다. 바로 **strict mode가 개발자의 코드의 에러 가능성을 미리 밝혀주는 아주 유용한 도구**라는 것이다. 가끔은 strict mode에서 에러가 발생하여도 production mode에선 발생하지 않을 것이니 그냥 넘겨짚는 때가 있었다. 하지만 strict mode에 대응함으로써 애플리케이션의 안정성이 더 높아짐을 알게 되었으니, 앞으로 정말 특별한 경우가 아닌 이상 strict mode 에서의 에러를 무시하지 않으려 한다
+
+---
+
+## 마무리
+분명 개발 과정에선 더 많은 고민들을 했던 것 같은데 막상 돌아보니 별게 아니었구나 싶어 기록하지 않은 것들이 많다. 그러면서도 배운것이 상당히 많았다. 특히 워커에 대한 이해도가 높아져, 브라우저 리소스를 더 적극적으로 활용할 수 있는 자신감이 생겼다
+
+한편으론 아예 동작하지 않는 애플리케이션을 만드는 것이 아닐까 걱정이 많았는데 그 걱정이 현실이 되지 않아 참 다행이라 생각한다. 그래도 여전히 부족한 것이 많다. 아직 알파 빌드 수준이라 판단하여 main 브랜치에 병합을 못하고 있다. 다음번 구현때는 15% 정도를 더 채우며 베타 빌드 수준으로 완성도를 높여보려 한다(물론 입사 지원을 몇 군데 더 하고나서 여유가 생긴다면 말이다...)
+
+남은 일들은 다음과 같다:
+- UI/UX 설계
+- 에러 핸들링
+- 배포
+- 성능 개선(`/time` 요청 방식 변경, 오차 보정, 영상 decoding 속도 및 안정성 향상 등)
+- 리팩토링
+
+UI/UX 설계, 에러 핸들링 까지 하는 것이 베타 빌드의 목표이다. 성능 개선이나 리팩토링은 베타 이후에 여유가 될 때 해야겠다
