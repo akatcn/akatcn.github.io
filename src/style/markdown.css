@@ -57,10 +57,14 @@
 }
 
 /* 코드 블럭 스타일링 */
+.yhmd figure[data-rehype-pretty-code-figure] {
+  @apply my-2;
+}
+
 .yhmd figure[data-rehype-pretty-code-figure] > pre > code {
   @apply py-4 px-0 rounded-md overflow-auto;
   span[data-line] {
-    @apply px-3
+    @apply px-6;
   }
 }
 
